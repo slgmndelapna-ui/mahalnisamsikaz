@@ -63,7 +63,17 @@
                 <button id="no-button">NO, NOT YET</button>
             </div>
 
-            <p id="response"></p>
+            <div id="response"></div>
+
+<div id="next-interaction" class="hidden">
+    <h2 id="next-question">Before we continue...</h2>
+    <p id="next-subtitle">There's something I'd like to ask you.</p>
+
+    <div class="choices">
+        <button id="next-yes">YES</button>
+        <button id="next-no">NO</button>
+    </div>
+</div>
         </section>
 
         <footer>
