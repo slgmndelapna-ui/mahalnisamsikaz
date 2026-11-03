@@ -2,13 +2,13 @@ const yesButton = document.getElementById("yes-button");
 const noButton = document.getElementById("no-button");
 const response = document.getElementById("response");
 const terminalStatus = document.getElementById("terminal-status");
-let is typing... = false;
+let istyping... = false;
 function type message(lines, index = 0) {
 if (index >= lines.length) {
   is typing = false;
   return;
 }
-  is typing = true;
+  istyping = true;
   const line = document.createElement("p");
   line.style.marginBottom = 10px ;
   if (lines[index].color) {
