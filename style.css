@@ -264,3 +264,23 @@ footer {
         padding: 13px 17px;
     }
 }
+.hidden {
+    display: none !important;
+}
+
+#next-interaction {
+    margin-top: 35px;
+    text-align: center;
+}
+
+#next-question {
+    color: var(--blue);
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+#next-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
