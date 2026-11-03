@@ -278,6 +278,44 @@ footer {
     font-size: 24px;
     margin-bottom: 12px;
 }
+#final-reveal {
+    margin-top: 45px;
+    padding: 30px 20px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    text-align: left;
+    animation: reveal 1s ease;
+}
+
+#final-reveal h2 {
+    color: var(--green);
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.final-message {
+    color: var(--text);
+    font-size: 14px;
+    line-height: 2;
+    white-space: pre-line;
+}
+
+.signature {
+    color: var(--blue);
+    margin-top: 25px;
+    font-family: 'DM Mono', monospace;
+}
+
+@keyframes reveal {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 #next-subtitle {
     color: var(--muted);
