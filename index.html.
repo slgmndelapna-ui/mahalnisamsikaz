@@ -1,56 +1,77 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="A private message retrieval experience.">
-  <title>ILOVEYOUKAZ // Message Retrieval</title>
-  <link rel="stylesheet" href="./main.css>
-
-    <!-- Code syntax highlighting -->
-    <link rel="stylesheet"
-
-  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mahal ni sam si kaz</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="ambient ambient-a"></div>div>
-  <div class="ambient ambient-b"></div>div>
 
-  <main class="shell">
-    <header class="topbar">
-      <div class="topbar">
-        <span class="brand-mark">E</span>
-      </div>
-    </div>
-    <div class="system-state">
-      <span class="pulse"></span>
-      SYSTEM ONLINE
-      <span class="version">v1.1.0</span>
-    </div>
-    </header>
+    <main class="workspace">
 
-    <section class="hero">
-      <p class="eyebrow">PRIVATE TRANSMISSION // RECIPIENT: misis ko</p>
-      <h1>Mahal kita<br><em>kasi/kazi?</em></h1>
-      <p class="intro">
-        Kapalit neto kiss plsplspls
-      </p>
-    </section>
+        <header class="topbar">
+            <div class="window-controls">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <p>#mahalnisamsikaz — interactive experience</p>
+        </header>
 
-    <section class="panel" aria-labelledby="panel-title">
-      <div class="panel-heading">
-        <div>
-          <span class=lock icon" aria-hidden="true"></span>
-        </div>
+        <section class="editor">
+            <div class="editor-header">
+                <span>♡ index.js</span>
+                <span class="status">● LIVE SESSION</span>
+            </div>
 
-        <p class="panel-copy">
-          kiss mo'ko kasi may pw 'to
-        </p>
+            <div class="code-area">
+                <div class="line-numbers">
+                    01<br>02<br>03<br>04<br>05<br>06<br>07<br>08
+                </div>
 
-        <form id="auth-form" autocomplete="off">
-          <label form"passphrase">PASSPHRASE</label>
-          <div class="input-row">
-          <input id="passphrase" type="password"
-            placeholder="Enter the passphrase..." required>
-          <button class="primary-btn" type="submit">
-            AUTHORIZE 
+                <div class="code">
+                    <p><span class="purple">const</span> <span class="blue">recipient</span> = <span class="green">"Kaz"</span>;</p>
+                    <p><span class="purple">const</span> <span class="blue">sender</span> = <span class="green">"Sam"</span>;</p>
+                    <br>
+                    <p><span class="gray">// initializing something special...</span></p>
+                    <p><span class="purple">function</span> <span class="yellow">beginExperience</span>() {</p>
+                    <p class="indent"><span class="purple">return</span> <span class="green">"Are you ready?"</span>;</p>
+                    <p>}</p>
+                </div>
+            </div>
+
+            <div class="terminal">
+                <p class="terminal-label">TERMINAL</p>
+                <p><span class="green">sam@laptop</span>:~$ initializing experience...</p>
+                <p id="terminal-status">Waiting for user interaction<span class="cursor">_</span></p>
+            </div>
+        </section>
+
+        <section class="interaction">
+            <p class="eyebrow">A MESSAGE FROM SAM</p>
+
+            <h1>Would you like to proceed?</h1>
+
+            <p class="subtitle">
+                I deserve a kiss after this.
+                Nothing complicated. Just something I made.
+            </p>
+
+            <div class="choices">
+                <button id="yes-button">YES, PROCEED →</button>
+                <button id="no-button">NO, NOT YET</button>
+            </div>
+
+            <p id="response"></p>
+        </section>
+
+        <footer>
+            BUILT BY DA GOAT
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
