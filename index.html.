@@ -74,6 +74,17 @@
         <button id="next-no">NO</button>
     </div>
 </div>
+<div id="final-reveal" class="hidden">
+    <p class="eyebrow">[ FINAL TRANSMISSION ]</p>
+
+    <h2>You've reached the end.</h2>
+
+    <div class="final-message">
+        <p id="final-message-text"></p>
+    </div>
+
+    <p class="signature">— Sam</p>
+</div>
         </section>
 
         <footer>
