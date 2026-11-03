@@ -4,44 +4,67 @@ const response = document.getElementById("response");
 const terminalStatus = document.getElementById("terminal-status");
 
 const nextInteraction = document.getElementById("next-interaction");
-const nextQuestion = document.getElementById("next-question");
-const nextSubtitle = document.getElementById("next-subtitle");
 const nextYes = document.getElementById("next-yes");
 const nextNo = document.getElementById("next-no");
 
+const finalReveal = document.getElementById("final-reveal");
+const finalMessageText = document.getElementById("final-message-text");
+
 let isTyping = false;
 
-function typeMessage(lines, index = 0, onComplete = null) {
-    if (index >= lines.length) {
-        isTyping = false;
-        if (onComplete) onComplete();
-        return;
+const finalMessage = `Hi, Kaz.
+
+I made this little experience because I wanted to do something different for you.
+
+Every line of code, every little detail, and every interaction was made by me.
+
+I'm still learning, but I wanted to make something that you could experience yourself.
+
+Thank you for being here.
+
+— Sam`;
+
+function typeText(element, text, speed = 35, callback = null) {
+    let index = 0;
+
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, speed);
+        } else if (callback) {
+            callback();
+        } else {
+            isTyping = false;
+        }
     }
 
     isTyping = true;
+    element.textContent = "";
+    type();
+}
+
+function typeMessages(messages, index = 0, callback = null) {
+    if (index >= messages.length) {
+        isTyping = false;
+        if (callback) callback();
+        return;
+    }
 
     const line = document.createElement("p");
     line.style.marginBottom = "10px";
 
-    if (lines[index].color) {
-        line.style.color = lines[index].color;
+    if (messages[index].color) {
+        line.style.color = messages[index].color;
     }
 
     response.appendChild(line);
 
-    let character = 0;
-
-    function typeCharacter() {
-        if (character < lines[index].text.length) {
-            line.textContent += lines[index].text.charAt(character);
-            character++;
-            setTimeout(typeCharacter, 35);
-        } else {
-            setTimeout(() => typeMessage(lines, index + 1, onComplete), 350);
-        }
-    }
-
-    typeCharacter();
+    typeText(line, messages[index].text, 35, () => {
+        setTimeout(() => {
+            typeMessages(messages, index + 1, callback);
+        }, 350);
+    });
 }
 
 function startExperience(choice) {
@@ -56,21 +79,21 @@ function startExperience(choice) {
     const messages = choice === "YES"
         ? [
             { text: "[SYSTEM] Access granted.", color: "#55b9ff" },
-            { text: "hi baby.", color: "#65e6a5" },
-            { text: "hafi birthday." },
-            { text: "go by cortis." }
+            { text: "Hello, Kaz.", color: "#65e6a5" },
+            { text: "I was hoping you'd say yes." },
+            { text: "Let's continue..." }
         ]
         : [
             { text: "[SYSTEM] Request received.", color: "#55b9ff" },
-            { text: "sana naki-kiss kita rn.", color: "#65e6a5" },
-            { text: "anw time your take." },
-            { text: "here lang me." }
+            { text: "That's okay, Kaz.", color: "#65e6a5" },
+            { text: "Take your time." },
+            { text: "Let's continue whenever you're ready." }
         ];
 
-    typeMessage(messages, 0, () => {
+    typeMessages(messages, 0, () => {
         setTimeout(() => {
             nextInteraction.classList.remove("hidden");
-            terminalStatus.textContent = "Waiting for next response...";
+            terminalStatus.textContent = "Awaiting next response...";
         }, 700);
     });
 }
@@ -81,27 +104,37 @@ function handleNextChoice(choice) {
     nextYes.disabled = true;
     nextNo.disabled = true;
 
+    nextInteraction.classList.add("hidden");
     terminalStatus.textContent = `Second response received: ${choice}`;
 
-    nextInteraction.classList.add("hidden");
     response.innerHTML = "";
 
     const messages = choice === "YES"
         ? [
             { text: "[SYSTEM] Continuing sequence...", color: "#55b9ff" },
-            { text: "i love my wife sm guys.", color: "#65e6a5" },
-            { text: "I made all of this myself" },
-            { text: "kiss lang kapalit" }
+            { text: "Okay, one more thing.", color: "#65e6a5" },
+            { text: "I made all of this myself." },
+            { text: "And I have something to show you." }
         ]
         : [
             { text: "[SYSTEM] Response saved.", color: "#55b9ff" },
-            { text: "flis", color: "#65e6a5" },
-            { text: "miss ko na talaga baby ko" },
-            { text: "look mo" }
+            { text: "No pressure, Kaz.", color: "#65e6a5" },
+            { text: "I still have something to show you." }
         ];
 
-    typeMessage(messages, 0, () => {
-        terminalStatus.textContent = "Second sequence completed.";
+    typeMessages(messages, 0, () => {
+        setTimeout(() => {
+            finalReveal.classList.remove("hidden");
+
+            typeText(
+                finalMessageText,
+                finalMessage,
+                35,
+                () => {
+                    terminalStatus.textContent = "TRANSMISSION COMPLETE.";
+                }
+            );
+        }, 900);
     });
 }
 
