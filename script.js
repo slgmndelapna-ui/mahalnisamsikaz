@@ -56,7 +56,7 @@ i really think you have a special place in my heart, i wish we'd still be close 
 
 yun lang, hafi happy haps birthday, baby ko.
 
-`function typeText(element, text, speed = 35, callback = null) {
+`;function typeText(element, text, speed = 35, callback = null) {
     let index = 0;
 
     function type() {
