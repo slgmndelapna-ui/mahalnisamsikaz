@@ -1,0 +1,266 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --background: #080e16;
+    --panel: #101b29;
+    --border: #1e3548;
+    --text: #e3f2fd;
+    --muted: #8299aa;
+
+    --blue: #55b9ff;
+    --blue-dark: #1676c5;
+    --green: #65e6a5;
+    --green-soft: #a2f5c9;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 35px 18px;
+}
+
+.workspace {
+    width: 100%;
+    max-width: 850px;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 20px;
+    background: #122031;
+    border: 1px solid var(--border);
+    border-radius: 12px 12px 0 0;
+}
+
+.topbar p {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.window-controls {
+    display: flex;
+    gap: 7px;
+}
+
+.window-controls span {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--blue);
+}
+
+.window-controls span:nth-child(2) {
+    background: var(--green);
+}
+
+.window-controls span:nth-child(3) {
+    background: #347cae;
+}
+
+.editor {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: none;
+    overflow: hidden;
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: #142438;
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+}
+
+.status {
+    color: var(--green);
+}
+
+.code-area {
+    display: flex;
+    padding: 25px 20px;
+    min-height: 200px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 2;
+}
+
+.line-numbers {
+    color: #45647d;
+    text-align: right;
+    padding-right: 22px;
+    user-select: none;
+}
+
+.code {
+    color: var(--text);
+}
+
+.purple,
+.blue {
+    color: var(--blue);
+}
+
+.green,
+.yellow {
+    color: var(--green);
+}
+
+.gray {
+    color: #6f91a9;
+}
+
+.indent {
+    padding-left: 25px;
+}
+
+.terminal {
+    background: #080f18;
+    border-top: 1px solid var(--border);
+    padding: 18px 22px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    line-height: 2;
+    color: var(--muted);
+}
+
+.terminal-label {
+    color: var(--blue);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    font-size: 10px;
+}
+
+.cursor {
+    color: var(--green);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.interaction {
+    text-align: center;
+    padding: 65px 20px;
+}
+
+.eyebrow {
+    font-family: 'DM Mono', monospace;
+    color: var(--green);
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-bottom: 22px;
+}
+
+.interaction h1 {
+    font-size: clamp(27px, 5vw, 43px);
+    font-weight: 600;
+    letter-spacing: -1.5px;
+    margin-bottom: 17px;
+    color: var(--text);
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+    max-width: 430px;
+    margin: 0 auto;
+}
+
+.choices {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 14px 25px;
+    border: 1px solid var(--blue);
+    background: transparent;
+    color: var(--blue);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+button:hover {
+    background: var(--blue);
+    color: #080e16;
+    transform: translateY(-2px);
+}
+
+#no-button {
+    border-color: var(--green);
+    color: var(--green);
+}
+
+#no-button:hover {
+    background: var(--green);
+    color: #080e16;
+}
+
+#response {
+    margin-top: 25px;
+    color: var(--green);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    color: #55748a;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 550px) {
+    .topbar {
+        gap: 12px;
+        padding: 13px;
+    }
+
+    .topbar p {
+        font-size: 10px;
+    }
+
+    .code-area {
+        font-size: 11px;
+        padding: 20px 12px;
+    }
+
+    .interaction {
+        padding: 45px 10px;
+    }
+
+    button {
+        padding: 13px 17px;
+    }
+}
