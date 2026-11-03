@@ -50,7 +50,8 @@ kasi pamilya ko di ko sinusunod pero misis ko oo, im really happy that i met you
 
 and im hoping ill get to know you better so i can keep falling in love over and over again (over guys mb)
 
-and i also hope that one day, i can gift you everything youll ever want and make you happy. i love you so much, bebe
+`;
+function typeText(element, text, speed = 35, callback = null) {    let index = 0;`
 
 i really think you have a special place in my heart, i wish we'd still be close after many years.
 
