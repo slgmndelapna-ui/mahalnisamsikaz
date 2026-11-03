@@ -12,19 +12,51 @@ const finalMessageText = document.getElementById("final-message-text");
 
 let isTyping = false;
 
-const finalMessage = `Hi, Kaz.
+const finalMessage = `hi palangga.
 
-I made this little experience because I wanted to do something different for you.
+i've been diarying'ed whatever sa notes ko so i'll just copy paste.
 
-Every line of code, every little detail, and every interaction was made by me.
+and also every line of code, every little detail, and every interaction was made by me.
 
-I'm still learning, but I wanted to make something that you could experience yourself.
+im still learning, but I wanted to make something that you could experience yourself.
 
-Thank you for being here.
+thx for op'ning diz
 
-— Sam`;
+"yes i do like you because you're gorgeous, but girl?
 
-function typeText(element, text, speed = 35, callback = null) {
+talking to you makes me happy because someone actually tries to actually understand my kabaliwan
+
+and you do sometimes get annoyed by it but its genuinely so cute seeing you annoyed, baby
+
+and also having you comfortable with me talking abt anything makes me fall deeper 'cuz ganon basta boom
+
+it makes me feel special ba, ive been wanting to send you actual flowers and a gift for your bday
+
+but im not really good with these stuff and im scared hehe, just know that its a sign na love na love kita, babybybyby
+
+YES IM REALLY HALATA but thats because im unexperienced with these stufff, like i wanna go over sa over
+
+we mightve never seen each other like physically but i already want to give you everything.
+
+lahat ng 11:11, shooting stars, and stuff i wished for you, for us to last, baby :(
+
+and i keep falling for you ket sa simpleng paguusap lang natin, i really like talking to you
+
+ive liked you for 2 months pa lang and im determined for us to last frfr
+
+i love the way we banter and the way you would tell me or even remind me about the right things i should and could do
+
+kasi pamilya ko di ko sinusunod pero misis ko oo, im really happy that i met you, langga.
+
+and im hoping ill get to know you better so i can keep falling in love over and over again (over guys mb)
+
+and i also hope that one day, i can gift you everything youll ever want and make you happy. i love you so much, bebe
+
+i really think you have a special place in my heart, i wish we'd still be close after many years.
+
+yun lang, hafi happy haps birthday, baby ko.
+
+`function typeText(element, text, speed = 35, callback = null) {
     let index = 0;
 
     function type() {
