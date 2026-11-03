@@ -111,15 +111,15 @@ function startExperience(choice) {
     const messages = choice === "YES"
         ? [
             { text: "[SYSTEM] Access granted.", color: "#55b9ff" },
-            { text: "Hello, Kaz.", color: "#65e6a5" },
-            { text: "I was hoping you'd say yes." },
-            { text: "Let's continue..." }
+            { text: "hi, langga.", color: "#65e6a5" },
+            { text: "u probably obviously chose yes." },
+            { text: "oke proceed pls" }
         ]
         : [
             { text: "[SYSTEM] Request received.", color: "#55b9ff" },
-            { text: "That's okay, Kaz.", color: "#65e6a5" },
-            { text: "Take your time." },
-            { text: "Let's continue whenever you're ready." }
+            { text: "ay, no worries, bebe.", color: "#65e6a5" },
+            { text: "refresh mo whenever ur'e ready" },
+            { text: "let's continue whenever you're ready" }
         ];
 
     typeMessages(messages, 0, () => {
@@ -144,14 +144,14 @@ function handleNextChoice(choice) {
     const messages = choice === "YES"
         ? [
             { text: "[SYSTEM] Continuing sequence...", color: "#55b9ff" },
-            { text: "Okay, one more thing.", color: "#65e6a5" },
-            { text: "I made all of this myself." },
-            { text: "And I have something to show you." }
+            { text: "last one na", color: "#65e6a5" },
+            { text: "im so proud of this" },
+            { text: "zo here's a letter for you" }
         ]
         : [
             { text: "[SYSTEM] Response saved.", color: "#55b9ff" },
-            { text: "No pressure, Kaz.", color: "#65e6a5" },
-            { text: "I still have something to show you." }
+            { text: ":((((", color: "#65e6a5" },
+            { text: "anyways" }
         ];
 
     typeMessages(messages, 0, () => {
