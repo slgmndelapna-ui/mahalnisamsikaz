@@ -1,3 +1,4 @@
+
 const yesButton = document.getElementById("yes-button");
 const noButton = document.getElementById("no-button");
 const response = document.getElementById("response");
@@ -9,6 +10,15 @@ const nextNo = document.getElementById("next-no");
 
 const finalReveal = document.getElementById("final-reveal");
 const finalMessageText = document.getElementById("final-message-text");
+
+const mainWorkspace = document.getElementById("main-workspace");
+const birthdayStage = document.getElementById("birthday-stage");
+const openPrompt = document.getElementById("open-prompt");
+const openYes = document.getElementById("open-yes");
+const openNo = document.getElementById("open-no");
+const openNote = document.getElementById("open-note");
+const birthdayAnimation = document.getElementById("birthday-animation");
+const replayBirthday = document.getElementById("replay-birthday");
 
 let isTyping = false;
 
@@ -118,7 +128,7 @@ function startExperience(choice) {
             { text: "[SYSTEM] Request received.", color: "#55b9ff" },
             { text: "ay, no worries, bebe.", color: "#65e6a5" },
             { text: "refresh mo whenever ur'e ready" },
-            { text: "let's continue whenever you're ready" }
+            { text: "go bebs" }
         ];
 
     typeMessages(messages, 0, () => {
@@ -137,7 +147,6 @@ function handleNextChoice(choice) {
 
     nextInteraction.classList.add("hidden");
     terminalStatus.textContent = `Second response received: ${choice}`;
-
     response.innerHTML = "";
 
     const messages = choice === "YES"
@@ -157,16 +166,39 @@ function handleNextChoice(choice) {
         setTimeout(() => {
             finalReveal.classList.remove("hidden");
 
-            typeText(
-                finalMessageText,
-                finalMessage,
-                35,
-                () => {
-                    terminalStatus.textContent = "TRANSMISSION COMPLETE.";
-                }
-            );
+            typeText(finalMessageText, finalMessage, 35, () => {
+                terminalStatus.textContent = "TRANSMISSION COMPLETE.";
+                setTimeout(showOpenPrompt, 1400);
+            });
         }, 900);
     });
+}
+
+function showOpenPrompt() {
+    mainWorkspace.classList.add("workspace-fade-out");
+
+    setTimeout(() => {
+        mainWorkspace.classList.add("hidden");
+        birthdayStage.classList.remove("hidden");
+        requestAnimationFrame(() => birthdayStage.classList.add("stage-visible"));
+        terminalStatus.textContent = "SUPER DUPER LAST NA.";
+    }, 1100);
+}
+
+function startBirthdayAnimation() {
+    openPrompt.classList.add("hidden");
+    birthdayAnimation.classList.remove("hidden");
+
+    birthdayAnimation.classList.remove("play");
+    void birthdayAnimation.offsetWidth;
+    birthdayAnimation.classList.add("play");
+    terminalStatus.textContent = "Not really surprise but ok.";
+}
+
+function replaySurprise() {
+    birthdayAnimation.classList.add("hidden");
+    openPrompt.classList.remove("hidden");
+    openNote.textContent = "one more time? ♡";
 }
 
 yesButton.addEventListener("click", () => startExperience("YES"));
@@ -174,3 +206,9 @@ noButton.addEventListener("click", () => startExperience("NO"));
 
 nextYes.addEventListener("click", () => handleNextChoice("YES"));
 nextNo.addEventListener("click", () => handleNextChoice("NO"));
+
+openYes.addEventListener("click", startBirthdayAnimation);
+openNo.addEventListener("click", () => {
+    openNote.textContent = "no rush, bebe. whenever you're ready ♡";
+});
+replayBirthday.addEventListener("click", replaySurprise);
