@@ -21,6 +21,8 @@ const birthdayAnimation = document.getElementById("birthday-animation");
 const replayBirthday = document.getElementById("replay-birthday");
 
 let isTyping = false;
+let noAttempts = 0;
+const attemptsBeforeDisappearing = 5;
 
 const finalMessage = `hi palangga.
 
@@ -64,6 +66,46 @@ i really think you have a special place in my heart, i wish we'd still be close 
 
 yun lang, hafi happy haps birthday, baby ko.
 `;
+
+/* NO BUTTON DODGE */
+
+function dodgeNoButton() {
+    if (isTyping || noButton.classList.contains("vanished")) return;
+
+    noAttempts++;
+
+    if (noAttempts >= attemptsBeforeDisappearing) {
+        noButton.classList.add("vanished");
+        terminalStatus.textContent = "NO OPTION NOT FOUND.";
+        return;
+    }
+
+    noButton.classList.add("dodging");
+
+    const padding = 25;
+    const maxX = window.innerWidth - noButton.offsetWidth - padding;
+    const maxY = window.innerHeight - noButton.offsetHeight - padding;
+
+    const randomX = Math.max(padding, Math.random() * maxX);
+    const randomY = Math.max(padding, Math.random() * maxY);
+
+    noButton.style.left = `${randomX}px`;
+    noButton.style.top = `${randomY}px`;
+
+    terminalStatus.textContent = `NO OPTION ESCAPED: ${noAttempts}/${attemptsBeforeDisappearing}`;
+}
+
+noButton.addEventListener("mouseenter", dodgeNoButton);
+
+noButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    dodgeNoButton();
+});
+
+noButton.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    dodgeNoButton();
+}, { passive: false });
 
 function typeText(element, text, speed = 35, callback = null) {
     let index = 0;
@@ -128,7 +170,7 @@ function startExperience(choice) {
             { text: "[SYSTEM] Request received.", color: "#55b9ff" },
             { text: "ay, no worries, bebe.", color: "#65e6a5" },
             { text: "refresh mo whenever ur'e ready" },
-            { text: "go bebs" }
+            { text: "let's continue whenever you're ready" }
         ];
 
     typeMessages(messages, 0, () => {
@@ -181,7 +223,7 @@ function showOpenPrompt() {
         mainWorkspace.classList.add("hidden");
         birthdayStage.classList.remove("hidden");
         requestAnimationFrame(() => birthdayStage.classList.add("stage-visible"));
-        terminalStatus.textContent = "SUPER DUPER LAST NA.";
+        terminalStatus.textContent = "FINAL SURPRISE READY.";
     }, 1100);
 }
 
@@ -192,7 +234,7 @@ function startBirthdayAnimation() {
     birthdayAnimation.classList.remove("play");
     void birthdayAnimation.offsetWidth;
     birthdayAnimation.classList.add("play");
-    terminalStatus.textContent = "Not really surprise but ok.";
+    terminalStatus.textContent = "BIRTHDAY SURPRISE DEPLOYED.";
 }
 
 function replaySurprise() {
@@ -202,13 +244,14 @@ function replaySurprise() {
 }
 
 yesButton.addEventListener("click", () => startExperience("YES"));
-noButton.addEventListener("click", () => startExperience("NO"));
 
 nextYes.addEventListener("click", () => handleNextChoice("YES"));
 nextNo.addEventListener("click", () => handleNextChoice("NO"));
 
 openYes.addEventListener("click", startBirthdayAnimation);
+
 openNo.addEventListener("click", () => {
     openNote.textContent = "no rush, bebe. whenever you're ready ♡";
 });
+
 replayBirthday.addEventListener("click", replaySurprise);
