@@ -83,16 +83,17 @@ function dodgeNoButton() {
     noButton.classList.add("dodging");
 
     const padding = 25;
-    const maxX = window.innerWidth - noButton.offsetWidth - padding;
-    const maxY = window.innerHeight - noButton.offsetHeight - padding;
+    const maxX = Math.max(padding, window.innerWidth - noButton.offsetWidth - padding);
+    const maxY = Math.max(padding, window.innerHeight - noButton.offsetHeight - padding);
 
-    const randomX = Math.max(padding, Math.random() * maxX);
-    const randomY = Math.max(padding, Math.random() * maxY);
+    const randomX = padding + Math.random() * (maxX - padding);
+    const randomY = padding + Math.random() * (maxY - padding);
 
     noButton.style.left = `${randomX}px`;
     noButton.style.top = `${randomY}px`;
 
-    terminalStatus.textContent = `NO OPTION ESCAPED: ${noAttempts}/${attemptsBeforeDisappearing}`;
+    terminalStatus.textContent =
+        `NO OPTION ESCAPED: ${noAttempts}/${attemptsBeforeDisappearing}`;
 }
 
 noButton.addEventListener("mouseenter", dodgeNoButton);
@@ -106,6 +107,8 @@ noButton.addEventListener("touchstart", (event) => {
     event.preventDefault();
     dodgeNoButton();
 }, { passive: false });
+
+/* TYPING EFFECT */
 
 function typeText(element, text, speed = 35, callback = null) {
     let index = 0;
@@ -150,6 +153,8 @@ function typeMessages(messages, index = 0, callback = null) {
     });
 }
 
+/* FIRST INTERACTION */
+
 function startExperience(choice) {
     if (isTyping) return;
 
@@ -180,6 +185,8 @@ function startExperience(choice) {
         }, 700);
     });
 }
+
+/* SECOND INTERACTION */
 
 function handleNextChoice(choice) {
     if (isTyping) return;
@@ -216,6 +223,8 @@ function handleNextChoice(choice) {
     });
 }
 
+/* BIRTHDAY SCREEN */
+
 function showOpenPrompt() {
     mainWorkspace.classList.add("workspace-fade-out");
 
@@ -234,6 +243,7 @@ function startBirthdayAnimation() {
     birthdayAnimation.classList.remove("play");
     void birthdayAnimation.offsetWidth;
     birthdayAnimation.classList.add("play");
+
     terminalStatus.textContent = "BIRTHDAY SURPRISE DEPLOYED.";
 }
 
@@ -242,6 +252,8 @@ function replaySurprise() {
     openPrompt.classList.remove("hidden");
     openNote.textContent = "one more time? ♡";
 }
+
+/* BUTTON EVENTS */
 
 yesButton.addEventListener("click", () => startExperience("YES"));
 
