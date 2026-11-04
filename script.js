@@ -19,9 +19,16 @@ const openNo = document.getElementById("open-no");
 const openNote = document.getElementById("open-note");
 const birthdayAnimation = document.getElementById("birthday-animation");
 const replayBirthday = document.getElementById("replay-birthday");
+const birthdayBow = document.querySelector(".bow");
 
 let isTyping = false;
 let noAttempts = 0;
+let openNoAttempts = 0;
+let bowIsBeingPulled = false;
+let bowStartX = 0;
+let pullDistance = 0;
+let surpriseStarted = false;
+
 const attemptsBeforeDisappearing = 5;
 
 const finalMessage = `hi palangga.
@@ -67,7 +74,7 @@ i really think you have a special place in my heart, i wish we'd still be close 
 yun lang, hafi happy haps birthday, baby ko.
 `;
 
-/* NO BUTTON DODGE */
+/* FIRST NO BUTTON */
 
 function dodgeNoButton() {
     if (isTyping || noButton.classList.contains("vanished")) return;
@@ -86,14 +93,10 @@ function dodgeNoButton() {
     const maxX = Math.max(padding, window.innerWidth - noButton.offsetWidth - padding);
     const maxY = Math.max(padding, window.innerHeight - noButton.offsetHeight - padding);
 
-    const randomX = padding + Math.random() * (maxX - padding);
-    const randomY = padding + Math.random() * (maxY - padding);
+    noButton.style.left = `${padding + Math.random() * (maxX - padding)}px`;
+    noButton.style.top = `${padding + Math.random() * (maxY - padding)}px`;
 
-    noButton.style.left = `${randomX}px`;
-    noButton.style.top = `${randomY}px`;
-
-    terminalStatus.textContent =
-        `NO OPTION ESCAPED: ${noAttempts}/${attemptsBeforeDisappearing}`;
+    terminalStatus.textContent = `NO OPTION ESCAPED: ${noAttempts}/${attemptsBeforeDisappearing}`;
 }
 
 noButton.addEventListener("mouseenter", dodgeNoButton);
@@ -108,7 +111,7 @@ noButton.addEventListener("touchstart", (event) => {
     dodgeNoButton();
 }, { passive: false });
 
-/* TYPING EFFECT */
+/* TYPING EFFECTS */
 
 function typeText(element, text, speed = 35, callback = null) {
     let index = 0;
@@ -231,26 +234,148 @@ function showOpenPrompt() {
     setTimeout(() => {
         mainWorkspace.classList.add("hidden");
         birthdayStage.classList.remove("hidden");
-        requestAnimationFrame(() => birthdayStage.classList.add("stage-visible"));
-        terminalStatus.textContent = "FINAL SURPRISE READY.";
+
+        requestAnimationFrame(() => {
+            birthdayStage.classList.add("stage-visible");
+        });
     }, 1100);
 }
+
+/* CAKE SURPRISE NO BUTTON */
+
+function dodgeCakeNoButton() {
+    if (openNo.classList.contains("vanished")) return;
+
+    openNoAttempts++;
+
+    if (openNoAttempts >= attemptsBeforeDisappearing) {
+        openNo.classList.add("vanished");
+        openNote.textContent = "NO OPTION NOT FOUND. hehe ♡";
+        return;
+    }
+
+    openNo.classList.add("dodging");
+
+    const padding = 25;
+    const maxX = Math.max(padding, window.innerWidth - openNo.offsetWidth - padding);
+    const maxY = Math.max(padding, window.innerHeight - openNo.offsetHeight - padding);
+
+    openNo.style.left = `${padding + Math.random() * (maxX - padding)}px`;
+    openNo.style.top = `${padding + Math.random() * (maxY - padding)}px`;
+}
+
+openNo.addEventListener("mouseenter", dodgeCakeNoButton);
+
+openNo.addEventListener("click", (event) => {
+    event.preventDefault();
+    dodgeCakeNoButton();
+});
+
+openNo.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    dodgeCakeNoButton();
+}, { passive: false });
+
+/* START BIRTHDAY SURPRISE */
 
 function startBirthdayAnimation() {
     openPrompt.classList.add("hidden");
     birthdayAnimation.classList.remove("hidden");
 
     birthdayAnimation.classList.remove("play");
-    void birthdayAnimation.offsetWidth;
-    birthdayAnimation.classList.add("play");
+    birthdayAnimation.classList.remove("shot");
 
-    terminalStatus.textContent = "BIRTHDAY SURPRISE DEPLOYED.";
+    birthdayBow.classList.remove("pulling", "shot");
+    birthdayBow.style.removeProperty("--pull-distance");
+
+    surpriseStarted = false;
+    bowIsBeingPulled = false;
+    pullDistance = 0;
+
+    terminalStatus.textContent = "PULL THE BOW TO BEGIN. ♡";
 }
 
+/* INTERACTIVE BOW */
+
+birthdayBow.addEventListener("pointerdown", (event) => {
+    if (surpriseStarted) return;
+
+    event.preventDefault();
+
+    bowIsBeingPulled = true;
+    bowStartX = event.clientX;
+    pullDistance = 0;
+
+    birthdayBow.classList.add("pulling");
+    birthdayBow.setPointerCapture(event.pointerId);
+
+    terminalStatus.textContent = "PULL BACK TO AIM AT THE HEART. ♡";
+});
+
+birthdayBow.addEventListener("pointermove", (event) => {
+    if (!bowIsBeingPulled) return;
+
+    const distance = Math.max(0, Math.min(65, bowStartX - event.clientX));
+
+    pullDistance = distance;
+    birthdayBow.style.setProperty("--pull-distance", `${distance}px`);
+});
+
+birthdayBow.addEventListener("pointerup", () => {
+    if (!bowIsBeingPulled) return;
+
+    bowIsBeingPulled = false;
+
+    birthdayBow.classList.remove("pulling");
+
+    if (pullDistance < 15) {
+        birthdayBow.style.removeProperty("--pull-distance");
+        terminalStatus.textContent = "PULL A LITTLE FURTHER. ♡";
+        return;
+    }
+
+    if (surpriseStarted) return;
+
+    surpriseStarted = true;
+
+    birthdayBow.classList.add("shot");
+    terminalStatus.textContent = "THE HEART HAS BEEN HIT! ♡";
+
+    const arrow = birthdayBow.querySelector(".arrow");
+
+    arrow.addEventListener("animationend", function onArrowHit(event) {
+        if (event.animationName !== "shoot-to-heart") return;
+
+        arrow.removeEventListener("animationend", onArrowHit);
+
+        birthdayAnimation.classList.add("play");
+        terminalStatus.textContent = "CHOCOLATE CAKE UNLOCKED!";
+    });
+});
+
+birthdayBow.addEventListener("pointercancel", () => {
+    bowIsBeingPulled = false;
+    birthdayBow.classList.remove("pulling");
+    birthdayBow.style.removeProperty("--pull-distance");
+});
+
+/* REPLAY */
+
 function replaySurprise() {
+    birthdayAnimation.classList.remove("play");
     birthdayAnimation.classList.add("hidden");
+
     openPrompt.classList.remove("hidden");
     openNote.textContent = "one more time? ♡";
+
+    openNo.classList.remove("vanished", "dodging");
+    openNo.style.left = "";
+    openNo.style.top = "";
+    openNoAttempts = 0;
+
+    surpriseStarted = false;
+    birthdayBow.classList.remove("shot", "pulling");
+    birthdayBow.style.removeProperty("--pull-distance");
 }
 
 /* BUTTON EVENTS */
@@ -261,9 +386,4 @@ nextYes.addEventListener("click", () => handleNextChoice("YES"));
 nextNo.addEventListener("click", () => handleNextChoice("NO"));
 
 openYes.addEventListener("click", startBirthdayAnimation);
-
-openNo.addEventListener("click", () => {
-    openNote.textContent = "no rush, bebe. whenever you're ready ♡";
-});
-
 replayBirthday.addEventListener("click", replaySurprise);
