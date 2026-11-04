@@ -31,7 +31,12 @@ let surpriseStarted = false;
 
 const attemptsBeforeDisappearing = 5;
 
-const finalMessage = `hi palangga.
+const finalMessage = const backgroundMusic =
+document.getElementById("backgroundMusic"); 
+backgroundMusic.volume = 0.7; 
+backgroundMusic.play().catch(error => {
+                                console.log("Music playback needs user interaction:", error); 
+}); `hi palangga.
 
 i've been diarying'ed whatever sa notes ko so i'll just copy paste.
 
