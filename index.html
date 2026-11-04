@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
 </head>
 <body>
 
-    <main class="workspace">
+    <main class="workspace" id="main-workspace">
 
         <header class="topbar">
             <div class="window-controls">
@@ -43,7 +44,7 @@
 
             <div class="terminal">
                 <p class="terminal-label">TERMINAL</p>
-                <p><span class="green">sam@loveskaz</span>:~$ initializing experience...</p>
+                <p><span class="green">@samloveskaz</span>:~$ initializing experience...</p>
                 <p id="terminal-status">Waiting for user interaction<span class="cursor">_</span></p>
             </div>
         </section>
@@ -65,33 +66,119 @@
 
             <div id="response"></div>
 
-<div id="next-interaction" class="hidden">
-    <h2 id="next-question">lowkey not impressive but i tried guys</h2>
-    <p id="next-subtitle">i still love you though bebe, ket makita ni ate to sa files, SAY YES PLS</p>
+            <div id="next-interaction" class="hidden">
+                <h2 id="next-question">lowkey not impressive but i tried guys</h2>
+                <p id="next-subtitle">i still love you though bebe, ket makita ni ate to sa files, SAY YES PLS</p>
 
-    <div class="choices">
-        <button id="next-yes">YES</button>
-        <button id="next-no">NO</button>
-    </div>
-</div>
-<div id="final-reveal" class="hidden">
-    <p class="eyebrow">[ FINAL TRANSMISSION ]</p>
+                <div class="choices">
+                    <button id="next-yes">YES</button>
+                    <button id="next-no">NO</button>
+                </div>
+            </div>
 
-    <h2>the end but not our end.</h2>
+            <div id="final-reveal" class="hidden">
+                <p class="eyebrow">[ FINAL TRANSMISSION ]</p>
+                <h2>the end but not our end.</h2>
 
-    <div class="final-message">
-        <p id="final-message-text"></p>
-    </div>
+                <div class="final-message">
+                    <p id="final-message-text"></p>
+                </div>
 
-    <p class="signature">— Sam</p>
-</div>
+                <p class="signature">— Sam</p>
+            </div>
         </section>
 
         <footer>
             BUILT BY DA GOAT
         </footer>
-
     </main>
+
+    <!-- Birthday surprise screen -->
+    <section id="birthday-stage" class="birthday-stage hidden" aria-label="Birthday surprise">
+
+        <div class="open-prompt" id="open-prompt">
+            <p class="stage-eyebrow">A LITTLE SOMETHING FOR YOU</p>
+
+            <h1>open?</h1>
+
+            <p>i made one more thing, langga.</p>
+
+            <div class="choices">
+                <button id="open-yes">YES, OPEN IT ♡</button>
+                <button id="open-no">NO, NEVER >:(</button>
+            </div>
+
+            <p class="stage-note" id="open-note" aria-live="polite"></p>
+        </div>
+
+        <div id="birthday-animation" class="birthday-animation hidden">
+
+            <p class="birthday-heading">Birthday Surprise</p>
+
+            <div class="sky" aria-hidden="true">
+
+                <div class="heart-target">♥</div>
+
+                <div class="bow">
+                    <span class="bow-loop bow-left"></span>
+                    <span class="bow-loop bow-right"></span>
+                    <span class="bow-grip"></span>
+                    <span class="bow-string"></span>
+                    <span class="arrow"></span>
+                </div>
+
+                <div class="arrow-trail"></div>
+
+                <div class="cake-wrap">
+                    <div class="cake-plate"></div>
+
+                    <div class="cake cake-bottom">
+                        <span></span>
+                    </div>
+
+                    <div class="cake cake-middle">
+                        <span></span>
+                    </div>
+
+                    <div class="cake cake-top">
+                        <span></span>
+                    </div>
+
+                    <div class="candle">
+                        <i></i>
+                    </div>
+                </div>
+
+                <div class="floating-balloons" aria-hidden="true">
+                    <i>●</i><i>●</i><i>●</i>
+                    <i>●</i><i>●</i><i>●</i>
+                </div>
+
+                <div class="heart-rain" aria-hidden="true">
+                    <b>♥</b><b>♥</b><b>♥</b>
+                    <b>♥</b><b>♥</b><b>♥</b>
+                    <b>♥</b><b>♥</b><b>♥</b>
+                    <b>♥</b><b>♥</b><b>♥</b>
+                    <b>♥</b><b>♥</b><b>♥</b>
+                    <b>♥</b><b>♥</b><b>♥</b>
+                </div>
+
+                <div class="birthday-script">
+                    Happy Birthday, Kaziech
+                </div>
+
+            </div>
+
+            <p class="birthday-caption">
+                boomboomboom, just for you ♡
+            </p>
+
+            <button id="replay-birthday" class="replay-button">
+                REPLAY SURPRISE ↻
+            </button>
+
+        </div>
+    </section>
 
     <script src="script.js"></script>
 </body>
