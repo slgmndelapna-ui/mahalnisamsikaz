@@ -908,3 +908,10 @@ footer {
         transition-duration: .01ms !important;
     }
 }
+TweenMax.to("bow", 0.3, {
+    scaleX: 1,
+    transformOrigin: "right center",
+});
+TweenMax.to(".arrow-angle use", 0.3,
+                        { opacity: 0});
+TweenMax.to(".#arc", 0.2, { opacity: 0});
