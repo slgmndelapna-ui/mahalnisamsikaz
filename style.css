@@ -393,8 +393,10 @@ footer {
 }
 
 #open-no.dodging {
-    position: fixed;
-    z-index: 9999;
+    position: fixed !important;
+    z-index: 99999;
+    transition: left .18s ease, top .18s ease, opacity .3s ease;
+    margin: 0;
 }
 
 @keyframes prompt-in {
@@ -444,7 +446,7 @@ footer {
     animation: heartbeat 1.3s ease-in-out infinite;
 }
 
-/* BOW */
+/* BOW AND ARROW */
 
 .bow {
     position: absolute;
@@ -544,7 +546,7 @@ footer {
     }
 }
 
-/* CAKE */
+/* CHOCOLATE CAKE */
 
 .cake-wrap {
     position: absolute;
