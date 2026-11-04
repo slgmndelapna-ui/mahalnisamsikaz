@@ -893,3 +893,45 @@ footer {
         transition-duration: .01ms !important;
     }
 }
+
+/* CHOCOLATE CAKE */
+.chocolate-cake .cake {
+    background: linear-gradient(to bottom, #754329, #3b1c14) !important;
+    border-color: #32170f !important;
+}
+
+.chocolate-cake .cake-frosting {
+    background: #f6a6c8;
+}
+
+.chocolate-cake .cake-decoration {
+    position: absolute;
+    top: -8px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    color: #ffb8d5;
+    font-size: 16px;
+    z-index: 5;
+}
+
+.chocolate-cake .cake-plate {
+    background: #f7b8d2;
+}
+
+/* DODGING NO BUTTON */
+#no-button {
+    transition: left 0.18s ease, top 0.18s ease, opacity 0.3s ease;
+    position: relative;
+}
+
+#no-button.dodging {
+    position: fixed;
+    z-index: 9999;
+}
+
+#no-button.vanished {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
