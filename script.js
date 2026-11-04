@@ -30,21 +30,26 @@ const birthdayBow = document.querySelector(".bow");
 
 /* BACKGROUND MUSIC */
 
-const backgroundMusic = document.getElementById("backgroundMusic");
-
-if (backgroundMusic) {
-    backgroundMusic.volume = 0.7;
-    backgroundMusic.loop = false;
-}
+let backgroundMusic = null;
 
 function playBackgroundMusic() {
-    if (!backgroundMusic) return;
+    // Find the audio element when needed.
+    backgroundMusic = document.getElementById("backgroundMusic");
 
-    if (backgroundMusic.paused) {
-        backgroundMusic.play().catch(() => {
-            // Silently handle playback errors.
-        });
+    if (!backgroundMusic) {
+        console.error("Music element not found. Check index.html.");
+        return;
     }
+
+    backgroundMusic.volume = 0.7;
+    backgroundMusic.loop = false;
+
+    // Don't restart if the song is already playing.
+    if (!backgroundMusic.paused) return;
+
+    backgroundMusic.play().catch((error) => {
+        console.error("Music playback failed:", error);
+    });
 }
 
 /* VARIABLES */
@@ -191,9 +196,6 @@ function typeMessages(messages, index = 0, callback = null) {
 function startExperience(choice) {
     if (isTyping) return;
 
-    // Start music from the first YES/NO interaction.
-    playBackgroundMusic();
-
     yesButton.disabled = true;
     noButton.disabled = true;
 
@@ -250,6 +252,9 @@ function handleNextChoice(choice) {
     typeMessages(messages, 0, () => {
         setTimeout(() => {
             finalReveal.classList.remove("hidden");
+
+            // MUSIC STARTS WHEN THE LETTER APPEARS.
+            playBackgroundMusic();
 
             typeText(finalMessageText, finalMessage, 35, () => {
                 terminalStatus.textContent = "TRANSMISSION COMPLETE.";
@@ -412,7 +417,7 @@ function replaySurprise() {
     birthdayBow.classList.remove("shot", "pulling");
     birthdayBow.style.removeProperty("--pull-distance");
 
-    // Music deliberately continues during replay.
+    // Music continues uninterrupted.
 }
 
 /* BUTTON EVENTS */
