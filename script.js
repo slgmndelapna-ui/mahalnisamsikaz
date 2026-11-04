@@ -1,4 +1,11 @@
 
+/* =========================================
+   MAHALNISAMSIKAZ
+   COMPLETE SCRIPT.JS
+   ========================================= */
+
+/* ELEMENTS */
+
 const yesButton = document.getElementById("yes-button");
 const noButton = document.getElementById("no-button");
 const response = document.getElementById("response");
@@ -21,6 +28,27 @@ const birthdayAnimation = document.getElementById("birthday-animation");
 const replayBirthday = document.getElementById("replay-birthday");
 const birthdayBow = document.querySelector(".bow");
 
+/* BACKGROUND MUSIC */
+
+const backgroundMusic = document.getElementById("backgroundMusic");
+
+if (backgroundMusic) {
+    backgroundMusic.volume = 0.7;
+    backgroundMusic.loop = false;
+}
+
+function playBackgroundMusic() {
+    if (!backgroundMusic) return;
+
+    if (backgroundMusic.paused) {
+        backgroundMusic.play().catch(() => {
+            // Silently handle playback errors.
+        });
+    }
+}
+
+/* VARIABLES */
+
 let isTyping = false;
 let noAttempts = 0;
 let openNoAttempts = 0;
@@ -31,12 +59,9 @@ let surpriseStarted = false;
 
 const attemptsBeforeDisappearing = 5;
 
-const finalMessage = const backgroundMusic =
-document.getElementById("backgroundMusic"); 
-backgroundMusic.volume = 0.7; 
-backgroundMusic.play().catch(error => {
-                                console.log("Music playback needs user interaction:", error); 
-}); `hi palangga.
+/* FINAL LETTER */
+
+const finalMessage = `hi palangga.
 
 i've been diarying'ed whatever sa notes ko so i'll just copy paste.
 
@@ -165,6 +190,9 @@ function typeMessages(messages, index = 0, callback = null) {
 
 function startExperience(choice) {
     if (isTyping) return;
+
+    // Start music from the first YES/NO interaction.
+    playBackgroundMusic();
 
     yesButton.disabled = true;
     noButton.disabled = true;
@@ -348,6 +376,8 @@ birthdayBow.addEventListener("pointerup", () => {
 
     const arrow = birthdayBow.querySelector(".arrow");
 
+    if (!arrow) return;
+
     arrow.addEventListener("animationend", function onArrowHit(event) {
         if (event.animationName !== "shoot-to-heart") return;
 
@@ -381,6 +411,8 @@ function replaySurprise() {
     surpriseStarted = false;
     birthdayBow.classList.remove("shot", "pulling");
     birthdayBow.style.removeProperty("--pull-distance");
+
+    // Music deliberately continues during replay.
 }
 
 /* BUTTON EVENTS */
