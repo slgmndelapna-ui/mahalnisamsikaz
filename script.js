@@ -33,11 +33,10 @@ const birthdayBow = document.querySelector(".bow");
 let backgroundMusic = null;
 
 function playBackgroundMusic() {
-    // Find the audio element when needed.
     backgroundMusic = document.getElementById("backgroundMusic");
 
     if (!backgroundMusic) {
-        console.error("Music element not found. Check index.html.");
+        console.error("Music element not found!");
         return;
     }
 
