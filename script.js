@@ -36,14 +36,13 @@ function playBackgroundMusic() {
     backgroundMusic = document.getElementById("backgroundMusic");
 
     if (!backgroundMusic) {
-        console.error("Music element not found!");
+        console.error("Music element not found. Check index.html.");
         return;
     }
 
     backgroundMusic.volume = 0.7;
     backgroundMusic.loop = true;
 
-    // Don't restart if the song is already playing.
     if (!backgroundMusic.paused) return;
 
     backgroundMusic.play().catch((error) => {
