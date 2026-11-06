@@ -42,7 +42,7 @@ function playBackgroundMusic() {
     }
 
     backgroundMusic.volume = 0.7;
-    backgroundMusic.loop = false;
+    backgroundMusic.loop = true;
 
     // Don't restart if the song is already playing.
     if (!backgroundMusic.paused) return;
@@ -195,6 +195,8 @@ function typeMessages(messages, index = 0, callback = null) {
 
 function startExperience(choice) {
     if (isTyping) return;
+   
+   playBackgroundMusic();
 
     yesButton.disabled = true;
     noButton.disabled = true;
@@ -253,8 +255,6 @@ function handleNextChoice(choice) {
         setTimeout(() => {
             finalReveal.classList.remove("hidden");
 
-            // MUSIC STARTS WHEN THE LETTER APPEARS.
-            playBackgroundMusic();
 
             typeText(finalMessageText, finalMessage, 35, () => {
                 terminalStatus.textContent = "TRANSMISSION COMPLETE.";
