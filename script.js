@@ -1,3 +1,8 @@
+
+// ==========================================
+// ELEMENT REFERENCES
+// ==========================================
+
 const yesButton = document.getElementById("yes-button");
 const noButton = document.getElementById("no-button");
 const response = document.getElementById("response");
@@ -13,42 +18,38 @@ const proceedButton = document.getElementById("proceed-button");
 
 const mainWorkspace = document.getElementById("main-workspace");
 const birthdayStage = document.getElementById("birthday-stage");
+
 const openPrompt = document.getElementById("open-prompt");
 const openYes = document.getElementById("open-yes");
 const openNo = document.getElementById("open-no");
 const openNote = document.getElementById("open-note");
+
 const birthdayAnimation = document.getElementById("birthday-animation");
 const replayBirthday = document.getElementById("replay-birthday");
-const birthdayBow = document.querySelector("bow");
+const birthdayBow = document.querySelector(".bow");
 
-let backgroundMusic = null;
+const backgroundMusic = document.getElementById("backgroundMusic");
 
-function playBackgroundMusic() {
-    backgroundMusic = document.getElementById("backgroundMusic");
 
-    if (!backgroundMUsic) {
-    console.error("Music element not found. Check index.html.");
-    return;
-    }
-
-  backgroundMusic.volume = 0.7;
-  backgroundMusic.loop = true;
-
-  if (!backgroundMusic.paused) return;
-
-  backgroundMusic.play().catch((error) => {
-  });
-}
+// ==========================================
+// VARIABLES
+// ==========================================
 
 let isTyping = false;
 let noAttempts = 0;
 let openNoAttempts = 0;
+
 let bowIsBeingPulled = false;
 let bowStartX = 0;
 let pullDistance = 0;
-let surprisedStarted = false;
+let surpriseStarted = false;
 
 const attemptBeforeDisappearing = 5;
+
+
+// ==========================================
+// YOUR LETTER
+// ==========================================
 
 const finalMessage = `hi, palangga.
 
@@ -89,32 +90,67 @@ i really think you have a special place in my heart."
 yun lang, hafi happy haps birthday, baby ko.
 `;
 
-function dodgeNoButton() {
-    if (isTyping || noButton.classlist.contains("vanished")) return;
 
-    noAttempts++;
+// ==========================================
+// BACKGROUND MUSIC
+// ==========================================
 
-    if (noAttempts >= attemptsBeforeDisappearing) {
-        noButton.classlist.add("vanished");
-        terminalStatus.textContext = "404 NOT FOUND.";
+function playBackgroundMusic() {
+    if (!backgroundMusic) {
+        console.error("Music element not found. Check index.html.");
         return;
     }
 
-     noButton.classlist.add("dodging");
+    backgroundMusic.volume = 0.7;
+    backgroundMusic.loop = true;
 
-     const padding = 25;
-     const maxX = Math.max(padding, window.innerWidth -
-  noButton.offsetWidth - padding);
-      const maxY = Math.max(padding, window.innerHeight -
-  noButton.offsetHeight - padding);
+    if (!backgroundMusic.paused) return;
 
-      noButton.style.left = `${padding + Math.random() * (maxX -
-  padding)}px`;
-      noButton.style.top = `${padding + Math.random() * (maxY -
-  padding)}px`;
+    backgroundMusic.play().catch((error) => {
+        console.log("Music playback was prevented:", error);
+    });
+}
 
-    terminalStauts.textContext = `NOT HERE BRO:
-  ${noAttempts/${attemptsBeforeDisappearing}`;
+
+// ==========================================
+// NO BUTTON DODGING
+// ==========================================
+
+function dodgeNoButton() {
+    if (isTyping || noButton.classList.contains("vanished")) {
+        return;
+    }
+
+    noAttempts++;
+
+    if (noAttempts >= attemptBeforeDisappearing) {
+        noButton.classList.add("vanished");
+        terminalStatus.textContent = "404 NOT FOUND.";
+        return;
+    }
+
+    noButton.classList.add("dodging");
+
+    const padding = 25;
+
+    const maxX = Math.max(
+        padding,
+        window.innerWidth - noButton.offsetWidth - padding
+    );
+
+    const maxY = Math.max(
+        padding,
+        window.innerHeight - noButton.offsetHeight - padding
+    );
+
+    noButton.style.left =
+        `${padding + Math.random() * (maxX - padding)}px`;
+
+    noButton.style.top =
+        `${padding + Math.random() * (maxY - padding)}px`;
+
+    terminalStatus.textContent =
+        `NOT HERE BRO: ${noAttempts}/${attemptBeforeDisappearing}`;
 }
 
 noButton.addEventListener("mouseenter", dodgeNoButton);
@@ -126,256 +162,416 @@ noButton.addEventListener("click", (event) => {
 
 noButton.addEventListener("touchstart", (event) => {
     event.preventDefault();
+    dodgeNoButton();
 }, { passive: false });
+
+
+// ==========================================
+// TYPING EFFECT
+// ==========================================
 
 function typeText(element, text, speed = 35, callback = null) {
     let index = 0;
 
-  function type() {
-    if (index < text.length) {
-        element.textContent += text.charAt(index);
-        index++;
-        setTimeout(type, speed);
-    } else if (callback) {
-        callback();
-    } else {
-        isTyping = false;
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+
+            setTimeout(type, speed);
+        } else {
+            if (callback) {
+                callback();
+            } else {
+                isTyping = false;
+            }
+        }
     }
-  }
 
-  function typeMessages(messages, index = 0, callback = null) {
-    if (index >= messages.length)
-        isTyping = false;
-        if (callback) callback();
-        return;
-  }
-
-  const line = document.createElement("p");
-  line.style.marginBottom = "10px";
-
-  if (messages[index].color) {
-    line.style.color = messages[index].color;
-  }
-
-  response.appendChild(line);
-
-  typeText(line, messages[index].text, 35, () => {
-    setTimeout(() => {
-      typeMessages(messages, index + 1, callback);
-    }, 350);
-  });
+    type();
 }
+
+
+// ==========================================
+// TYPE MULTIPLE MESSAGES
+// ==========================================
+
+function typeMessages(messages, index = 0, callback = null) {
+    if (index >= messages.length) {
+        isTyping = false;
+
+        if (callback) {
+            callback();
+        }
+
+        return;
+    }
+
+    const line = document.createElement("p");
+    line.style.marginBottom = "10px";
+
+    if (messages[index].color) {
+        line.style.color = messages[index].color;
+    }
+
+    response.appendChild(line);
+
+    typeText(line, messages[index].text, 35, () => {
+        setTimeout(() => {
+            typeMessages(messages, index + 1, callback);
+        }, 350);
+    });
+}
+
+
+// ==========================================
+// FIRST INTERACTION
+// ==========================================
 
 function startExperience(choice) {
-  if (isTyping) return;
+    if (isTyping) return;
 
-  playBackgroundMusic();
+    isTyping = true;
 
-  yesButton.disabled = true;
-  noButton.disabled = true;
+    playBackgroundMusic();
 
-  terminalStatus.textContext = `User response received'ed: ${choice}`;
-  response.innerHTML = "";
+    yesButton.disabled = true;
+    noButton.disabled = true;
 
-  const messages = choice === "YES"
-  ? [
-    { text: [SYSTEM] Access granted.", color: "#55b9ff" },
-    { text: "hi, langga.", color: '#65e6a5" },
-    { text: u probably obviously chose yes." },
-    { text: oke proceed pls" }
-  ]
-  : [
-    { text: [SYSTEM] Request received.", color: "#55b9ff" },
-    { text: "ay, no worries, bebe.", color: "#65e6a5" },
-    { text: "refresh mo na lang whenever you're ready" },
+    terminalStatus.textContent =
+        `User response received: ${choice}`;
 
-    }, 700);
-});
+    response.innerHTML = "";
+
+    const messages = choice === "YES"
+        ? [
+            {
+                text: "[SYSTEM] Access granted.",
+                color: "#55b9ff"
+            },
+            {
+                text: "hi, langga.",
+                color: "#65e6a5"
+            },
+            {
+                text: "u probably obviously chose yes."
+            },
+            {
+                text: "oke proceed pls."
+            }
+        ]
+        : [
+            {
+                text: "[SYSTEM] Request received.",
+                color: "#55b9ff"
+            },
+            {
+                text: "ay, no worries, bebe.",
+                color: "#65e6a5"
+            },
+            {
+                text: "refresh mo na lang whenever you're ready."
+            }
+        ];
+
+    typeMessages(messages, 0, () => {
+        nextInteraction.classList.remove("hidden");
+
+        nextYes.disabled = false;
+        nextNo.disabled = false;
+
+        terminalStatus.textContent =
+            "AWAITING SECOND RESPONSE.";
+    });
 }
+
+
+// ==========================================
+// SECOND INTERACTION
+// ==========================================
 
 function handleNextChoice(choice) {
-  if (isTyping) return;
+    if (isTyping) return;
 
-  nextYes.disabled = true;
-  nextNo.disabled = true;
+    isTyping = true;
 
-  nextInteraction.classlist.add("hidden");
-  terminalStatus.textContext = `Second response received:
-${choice}`;
-  response.innerHTML = "";
+    nextYes.disabled = true;
+    nextNo.disabled = true;
 
-  const messages = choice === "YES"
-  ? [
-    { text: "last one na", color: "#65e6a5" },
-    { text: "im so proud of this" },
-    { text: "zo here's a letter for you" }
-];
+    nextInteraction.classList.add("hidden");
 
-  typeMessages(messages, 0, () => {
-    setTimeout(() => {
-      finalReveal.classlist.remove("hidden");
+    terminalStatus.textContent =
+        `Second response received: ${choice}`;
 
-      typeText(finalMessageText, finalMessage, 35, () => {
-        terminalStatus.textContext = "TRANSMISSION COMPLETE. PA KISS.";
+    response.innerHTML = "";
 
-        if (proceedButton) {
-          proceedButton,classlist.remove("hidden");
-          proceedButton.disabled = false;
+    const messages = choice === "YES"
+        ? [
+            {
+                text: "last one na.",
+                color: "#65e6a5"
+            },
+            {
+                text: "im so proud of this."
+            },
+            {
+                text: "zo here's a letter for you."
+            }
+        ]
+        : [
+            {
+                text: "HAHAHA, no escaping this one.",
+                color: "#65e6a5"
+            },
+            {
+                text: "okay, here's something for you anyway."
+            },
+            {
+                text: "zo here's a letter for you."
+            }
+        ];
 
-        }
-      });
-    }
+    typeMessages(messages, 0, () => {
+        finalReveal.classList.remove("hidden");
 
-  function showOpenPrompt() {
-      // Immediately switch to the birthday screen.
-      // Background music continues uninterrupted.
+        typeText(finalMessageText, finalMessage, 35, () => {
+            terminalStatus.textContent =
+                "TRANSMISSION COMPLETE. AWAITING PROCEED.";
 
-      mainWorkspace.classlist.add("hidden");
-      birthdayStage.classlist.remove("hidden");
-      birthdayStage.classlist.add("stage-visible");
-    }
-
-    function dodgeCaakeNoButton() {
-      if (openNNo.classlist.contains("vanished")) return;
-
-      openNoAttempts++;
-
-      if (openNoAttempts >= attemptsBeforeDisappearing) {
-        openNo.classlist.add("vanished");
-        openNote.textContext = "NO OPTION NOT FOUND.";
-        return;
-      }
-
-    openNo.classlist.add("dodging");
-
-      const padding = 25;
-      const maxX = Math.max(padding, window.innerWidth -
-openNo.offsetWidth - padding);
-      const maxY = Math.max(padding, window.innerHeight -
-openNo.offsetHeight - padding);
-
-      openNo.style.left = `${padding + Math.random() * (maxX -
-padding)}[px`;
-
-      openNo.addEventListener("mouseenter", dodgeCakeNoButton);
-
-      openNo.addEventListener("click", (event) => {
-        event.preventDefault();
-        dodgeCakeNoButton();
-      }, { passive: false });
-
-      function startBirthdayAnimation() {
-        openPrompt.classlist.add("hidden");
-        birthdayAnimation.classlist.remove("hidden");
-
-        birthdayAnimation.classlist.remove("play");
-        birthdayAnimation.classlist.remove("shot");
-
-        birthdayBow.classlist.remove("pulling", "shot");
-        birthdayBow.style.removeProperty("--pull-distance");
-
-        surpriseStarted = false;
-        bowIsBeingPulled = false;
-        pullDistance = 0;
-
-        terminalStatus.textContext = "PULL ON THE BOW TO BEGIN.";
-      }
-
-      birthdayBow.addEventListener("pointerdown", (event) => {
-        if (surpriseStarted) return;
-
-        event.preventDefault();
-
-        bowIsBeingPulled = true;
-        bowStartX = event.clientX;
-        pullDistance = 0;
-
-        birthdayBow.classlist.add("pulling");
-        birthdayBow.setPointerCapture(event.pointerId);
-
-        terminalStatus.textContext = "PULL BACK TO AIM AT THE HEART.";
-      });
-
-      birthdayBow.addEventListener("pointermove", (event) => {
-        if (!bowIsBeingPulled) return;
-
-        const distance = Math.max(0, Math.min(65, bowStartX -
-        event.clientX));
-
-        pullDistance = distance;
-        birthdayBow.style.setProperty("--pull-distance", `${distance}px`);
-      });
-
-      birthdayBow.addEventListener("pointerup", () => {
-        if (!bowIsBeingPulled) return;
-
-        bowIsBeingPulled = false;
-
-        birthdayBow.classlist.remove("pulling");
-
-        if (pullDistance < 15) {
-          birthdayBow.style.removeProperty("--pull-distance");
-          terminalStatus.textContext = "PULL A LITTE FURTHER.";
-          return;
-        }
-
-        if (surpriseStarted) return;
-
-        surpriseStarted = true;
-
-        birthdayBow.classlist.add("shot");
-        terminalStatus.textContext = "THE HEART HAS BEEN HIT.";
-
-        const arrow = birthdayBow.querySelector(".arrow");
-
-        if (!arrow) return;
-
-        arrow.addEventListener("animationend", function onArrowHit(event)
-                               {
-                                 if (event.animationName !== "shoot-to-heart") return;
-
-                                 arrow.removeEventListener("animationend", onArrowHit);
-
-                                 birthdayAnimation.classlist.add("play");
-                                 terminalStatus.textContext = "CHOCOLATE CAKE UNLOCKED GUYS";
-                               });
-      });
-
-    birthdayBow.addEventListener("pointercancel", () => {
-      bowIsBeingPulled = false;
-      birthdayBow.classlist.remove("pulling");
-      birthdayBow.style.removeProperty("--pull-distance");
+            // Show Proceed ONLY after the entire letter is typed.
+            proceedButton.classList.remove("hidden");
+            proceedButton.disabled = false;
+        });
     });
-
-      function replaySurprise() {
-        birthdayAnimation.classlist.remove("play");
-        birthdayAnimation.classlist.add("hidden");
-
-        openPrompt.classlist.remove("hidden");
-        openNote.textContext = "one more time?";
-
-        openNo.classlist.remove("vanished", "dodging");
-        openNo.style.left = "";
-        openNo.style.top = "";
-        openNoAttempts = 0;
-
-        surpriseStarted = false;
-        birthdayBow.classlist.remove("shot", "pulling");
-        birthdayBow.style.removeProperty("--pull-distance");
-
-      }
-
-      yesButton.addEventListener("click", () => startExperience("YES"));
-
-      if (proceedButton) {
-        proceedButton.addEventListener("click"), showOpenPrompt);
 }
 
-nextYes.addEventListener("click", () => handleNextChoice("YES"));
-      nextNo.addEventListener("click", () => handleNextChoice("NO"));
 
-      openYes.addEventListener("click", () => handleNextChoice("YES"));
-      nextNo.addEventListener("click", () => handleNextChoice ("NO"));
+// ==========================================
+// PROCEED TO BIRTHDAY SCREEN
+// ==========================================
 
-      openYes.addEventListener("click", startBirthdayAnimation);
-      replayBirthday.addEventListener("click", replaySurprise);
+function showOpenPrompt() {
+    // Immediately hide the letter screen.
+    // Music continues playing.
+
+    mainWorkspace.classList.add("hidden");
+
+    birthdayStage.classList.remove("hidden");
+    birthdayStage.classList.add("stage-visible");
+}
+
+proceedButton.addEventListener("click", showOpenPrompt);
+
+
+// ==========================================
+// BIRTHDAY SCREEN: NO BUTTON
+// ==========================================
+
+function dodgeCakeNoButton() {
+    if (openNo.classList.contains("vanished")) {
+        return;
+    }
+
+    openNoAttempts++;
+
+    if (openNoAttempts >= attemptBeforeDisappearing) {
+        openNo.classList.add("vanished");
+        openNote.textContent = "NO OPTION NOT FOUND.";
+        return;
+    }
+
+    openNo.classList.add("dodging");
+
+    const padding = 25;
+
+    const maxX = Math.max(
+        padding,
+        window.innerWidth - openNo.offsetWidth - padding
+    );
+
+    const maxY = Math.max(
+        padding,
+        window.innerHeight - openNo.offsetHeight - padding
+    );
+
+    openNo.style.left =
+        `${padding + Math.random() * (maxX - padding)}px`;
+
+    openNo.style.top =
+        `${padding + Math.random() * (maxY - padding)}px`;
+}
+
+openNo.addEventListener("mouseenter", dodgeCakeNoButton);
+
+openNo.addEventListener("click", (event) => {
+    event.preventDefault();
+    dodgeCakeNoButton();
+});
+
+openNo.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    dodgeCakeNoButton();
+}, { passive: false });
+
+
+// ==========================================
+// START BIRTHDAY ANIMATION
+// ==========================================
+
+function startBirthdayAnimation() {
+    openPrompt.classList.add("hidden");
+
+    birthdayAnimation.classList.remove("hidden");
+
+    birthdayAnimation.classList.remove("play");
+
+    birthdayBow.classList.remove("pulling", "shot");
+    birthdayBow.style.removeProperty("--pull-distance");
+
+    surpriseStarted = false;
+    bowIsBeingPulled = false;
+    pullDistance = 0;
+
+    terminalStatus.textContent =
+        "PULL ON THE BOW TO BEGIN.";
+}
+
+openYes.addEventListener("click", startBirthdayAnimation);
+
+
+// ==========================================
+// BOW POINTER INTERACTION
+// ==========================================
+
+birthdayBow.addEventListener("pointerdown", (event) => {
+    if (surpriseStarted) return;
+
+    event.preventDefault();
+
+    bowIsBeingPulled = true;
+    bowStartX = event.clientX;
+    pullDistance = 0;
+
+    birthdayBow.classList.add("pulling");
+
+    birthdayBow.setPointerCapture(event.pointerId);
+
+    terminalStatus.textContent =
+        "PULL BACK TO AIM AT THE HEART.";
+});
+
+birthdayBow.addEventListener("pointermove", (event) => {
+    if (!bowIsBeingPulled) return;
+
+    const distance = Math.max(
+        0,
+        Math.min(65, bowStartX - event.clientX)
+    );
+
+    pullDistance = distance;
+
+    birthdayBow.style.setProperty(
+        "--pull-distance",
+        `${distance}px`
+    );
+});
+
+birthdayBow.addEventListener("pointerup", () => {
+    if (!bowIsBeingPulled) return;
+
+    bowIsBeingPulled = false;
+
+    birthdayBow.classList.remove("pulling");
+
+    if (pullDistance < 15) {
+        birthdayBow.style.removeProperty("--pull-distance");
+
+        terminalStatus.textContent =
+            "PULL A LITTLE FURTHER.";
+
+        return;
+    }
+
+    if (surpriseStarted) return;
+
+    surpriseStarted = true;
+
+    birthdayBow.classList.add("shot");
+
+    terminalStatus.textContent =
+        "THE HEART HAS BEEN HIT.";
+
+    const arrow = birthdayBow.querySelector(".arrow");
+
+    if (!arrow) return;
+
+    arrow.addEventListener("animationend", function onArrowHit(event) {
+        if (event.animationName !== "shoot-to-heart") return;
+
+        arrow.removeEventListener("animationend", onArrowHit);
+
+        birthdayAnimation.classList.add("play");
+
+        terminalStatus.textContent =
+            "CHOCOLATE CAKE UNLOCKED!";
+    });
+});
+
+birthdayBow.addEventListener("pointercancel", () => {
+    bowIsBeingPulled = false;
+
+    birthdayBow.classList.remove("pulling");
+
+    birthdayBow.style.removeProperty("--pull-distance");
+});
+
+
+// ==========================================
+// REPLAY BIRTHDAY SURPRISE
+// ==========================================
+
+function replaySurprise() {
+    birthdayAnimation.classList.remove("play");
+    birthdayAnimation.classList.add("hidden");
+
+    openPrompt.classList.remove("hidden");
+
+    openNote.textContent = "one more time?";
+
+    openNo.classList.remove("vanished", "dodging");
+
+    openNo.style.left = "";
+    openNo.style.top = "";
+
+    openNoAttempts = 0;
+
+    surpriseStarted = false;
+    bowIsBeingPulled = false;
+    pullDistance = 0;
+
+    birthdayBow.classList.remove("shot", "pulling");
+
+    birthdayBow.style.removeProperty("--pull-distance");
+
+    terminalStatus.textContent =
+        "BIRTHDAY SURPRISE READY.";
+}
+
+replayBirthday.addEventListener("click", replaySurprise);
+
+
+// ==========================================
+// BUTTON EVENT LISTENERS
+// ==========================================
+
+yesButton.addEventListener("click", () => {
+    startExperience("YES");
+});
+
+nextYes.addEventListener("click", () => {
+    handleNextChoice("YES");
+});
+
+nextNo.addEventListener("click", () => {
+    handleNextChoice("NO");
+});
