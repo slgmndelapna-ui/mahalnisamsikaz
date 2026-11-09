@@ -1,195 +1,24 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mahal ni sam si kaz</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-
+            scale=1.0">
+            <title>mahal ni sam si kaz</title>
+            <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
 
-    <main class="workspace" id="main-workspace">
+        <main class="workspace" id="main-workspace">
 
-        <header class="topbar">
-            <div class="window-controls">
-                <span></span><span></span><span></span>
-            </div>
-            <p>#mahalnisamsikaz — interactive experience</p>
-        </header>
-
-        <section class="editor">
-            <div class="editor-header">
-                <span>♡ index.js</span>
-                <span class="status">● LIVE SESSION</span>
-            </div>
-
-            <div class="code-area">
-                <div class="line-numbers">
-                    01<br>02<br>03<br>04<br>05<br>06<br>07<br>08
+            <header class="topbar">
+                <div class="window-controls">
+                    <span></span><span></span><span></span>
                 </div>
+                <p>#mahalnisamsikaz - interactive experience</p>
+            </header>
 
-                <div class="code">
-                    <p><span class="purple">const</span> <span class="blue">recipient</span> = <span class="green">"Kaz"</span>;</p>
-                    <p><span class="purple">const</span> <span class="blue">sender</span> = <span class="green">"Sam"</span>;</p>
-                    <br>
-                    <p><span class="gray">// initializing something special...</span></p>
-                    <p><span class="purple">function</span> <span class="yellow">beginExperience</span>() {</p>
-                    <p class="indent"><span class="purple">return</span> <span class="green">"#humanda"</span>;</p>
-                    <p>}</p>
-                </div>
-            </div>
-
-            <div class="terminal">
-                <p class="terminal-label">TERMINAL</p>
-                <p><span class="green">@samloveskaz</span>:~$ initializing experience...</p>
-                <p id="terminal-status">Waiting for user interaction<span class="cursor">_</span></p>
-            </div>
-        </section>
-
-        <section class="interaction">
-            <p class="eyebrow">A MESSAGE FROM SAM</p>
-
-            <h1>go or no go?</h1>
-
-            <p class="subtitle">
-                I deserve a kiss after this.
-                plsplspls. I dont know how to send emojis on laptop mb bro.
-            </p>
-
-            <div class="choices">
-                <button id="yes-button">YES, PROCEED →</button>
-                <button id="no-button">NO, NOT YET</button>
-            </div>
-
-            <div id="response"></div>
-
-            <div id="next-interaction" class="hidden">
-                <h2 id="next-question">lowkey not impressive but i tried guys</h2>
-                <p id="next-subtitle">i still love you though bebe, ket makita ni ate to sa files, SAY YES PLS</p>
-
-                <div class="choices">
-                    <button id="next-yes">YES</button>
-                    <button id="next-no">NO</button>
-                </div>
-            </div>
-
-            <div id="final-reveal" class="hidden">
-                <p class="eyebrow">[ FINAL TRANSMISSION ]</p>
-                <h2>the end but not our end.</h2>
-
-                <div class="final-message">
-                    <p id="final-message-text"></p>
-                </div>
-
-                <p class="signature">— Sam</p>
-
-                <!-- PROCEED BUTTON -->
-                <button id="proceed-button" class="hidden">
-                    PROCEED ♡ →
-                </button>
-            </div>
-        </section>
-
-        <footer>BUILT BY DA GOAT</footer>
-    </main>
-
-    <!-- Birthday surprise screen -->
-    <section id="birthday-stage" class="birthday-stage hidden" aria-label="Birthday surprise">
-
-        <div class="open-prompt" id="open-prompt">
-            <p class="stage-eyebrow">A LITTLE SOMETHING FOR YOU</p>
-            <h1>open?</h1>
-            <p>i made one more thing, langga.</p>
-
-            <div class="choices">
-                <button id="open-yes">YES, OPEN IT ♡</button>
-                <button id="open-no">NO, NEVER >:(</button>
-            </div>
-
-            <p class="stage-note" id="open-note" aria-live="polite"></p>
-        </div>
-
-        <div id="birthday-animation" class="birthday-animation hidden">
-
-            <p class="birthday-heading">Birthday Surprise</p>
-
-            <div class="sky" aria-hidden="true">
-
-                <div class="heart-target">♥</div>
-
-                <div class="bow">
-                    <span class="bow-loop bow-left"></span>
-                    <span class="bow-loop bow-right"></span>
-                    <span class="bow-grip"></span>
-                    <span class="bow-string"></span>
-                    <span class="arrow"></span>
-                </div>
-
-                <div class="arrow-trail"></div>
-
-                <!-- CHOCOLATE BIRTHDAY CAKE -->
-                <div class="cake-wrap chocolate-cake">
-                    <div class="cake-plate"></div>
-
-                    <div class="cake cake-bottom">
-                        <span></span>
-                    </div>
-
-                    <div class="cake cake-middle">
-                        <span></span>
-                    </div>
-
-                    <div class="cake cake-top">
-                        <span></span>
-                    </div>
-
-                    <div class="cake-decoration">
-                        <span>♡</span>
-                        <span>♥</span>
-                        <span>♡</span>
-                    </div>
-
-                    <div class="candle">
-                        <i></i>
-                    </div>
-                </div>
-                <!-- END CHOCOLATE CAKE -->
-
-                <div class="floating-balloons" aria-hidden="true">
-                    <i>●</i><i>●</i><i>●</i>
-                    <i>●</i><i>●</i><i>●</i>
-                </div>
-
-                <div class="heart-rain" aria-hidden="true">
-                    <b>♥</b><b>♥</b><b>♥</b>
-                    <b>♥</b><b>♥</b><b>♥</b>
-                    <b>♥</b><b>♥</b><b>♥</b>
-                    <b>♥</b><b>♥</b><b>♥</b>
-                    <b>♥</b><b>♥</b><b>♥</b>
-                    <b>♥</b><b>♥</b><b>♥</b>
-                </div>
-
-                <div class="birthday-script">
-                    Happy Birthday, Kaziech
-                </div>
-
-            </div>
-
-            <p class="birthday-caption">
-                boomboomboom, just for you ♡
-            </p>
-
-            <button id="replay-birthday" class="replay-button">
-                REPLAY SURPRISE ↻
-            </button>
-        </div>
-    </section>
-
-    <audio id="backgroundMusic" preload="auto" loop>
-        <source src="./song.mp3" type="audio/mpeg">
-    </audio>
-
-    <script src="script.js"></script>
-</body>
-</html>
+            <section class="editor">
+                <div class="editor-header">
+                    <span>index.js</span>
+                    <span class="status">* LIVE SESSION</span>
