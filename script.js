@@ -1,4 +1,3 @@
-
 // ==========================================
 // ELEMENT REFERENCES
 // ==========================================
@@ -338,7 +337,6 @@ function handleNextChoice(choice) {
             terminalStatus.textContent =
                 "TRANSMISSION COMPLETE. AWAITING PROCEED.";
 
-            // Show Proceed ONLY after the entire letter is typed.
             proceedButton.classList.remove("hidden");
             proceedButton.disabled = false;
         });
@@ -351,9 +349,6 @@ function handleNextChoice(choice) {
 // ==========================================
 
 function showOpenPrompt() {
-    // Immediately hide the letter screen.
-    // Music continues playing.
-
     mainWorkspace.classList.add("hidden");
 
     birthdayStage.classList.remove("hidden");
@@ -422,7 +417,6 @@ function startBirthdayAnimation() {
     openPrompt.classList.add("hidden");
 
     birthdayAnimation.classList.remove("hidden");
-
     birthdayAnimation.classList.remove("play");
 
     birthdayBow.classList.remove("pulling", "shot");
@@ -575,3 +569,421 @@ nextYes.addEventListener("click", () => {
 nextNo.addEventListener("click", () => {
     handleNextChoice("NO");
 });
+
+
+// ==========================================
+// GIFT SECTION + SIX-SONG MIXTAPE
+// ==========================================
+
+const continueGiftsButton = document.getElementById("continue-gifts");
+const giftSection = document.getElementById("gift-section");
+const giftBoxButton = document.getElementById("gift-box-button");
+const giftBoxCount = document.getElementById("gift-box-count");
+const giftInstruction = document.getElementById("gift-instruction");
+const giftReveal = document.getElementById("gift-reveal");
+
+const mixtapeOpenButton = document.getElementById("mixtape-open");
+const mixtapePlayer = document.getElementById("mixtape-player");
+const closeMixtapeButton = document.getElementById("close-mixtape");
+const mixtapeAudio = document.getElementById("mixtapeAudio");
+
+const songTitle = document.getElementById("song-title");
+const songArtist = document.getElementById("song-artist");
+const songNote = document.getElementById("song-note");
+const audioStatus = document.getElementById("audio-status");
+
+const playSongButton = document.getElementById("play-song");
+const previousSongButton = document.getElementById("previous-song");
+const nextSongButton = document.getElementById("next-song");
+
+const songItems = document.querySelectorAll(".song-item");
+
+const giftClicksNeeded = 5;
+
+let giftClicks = 0;
+let currentSongIndex = 0;
+let backgroundWasPlaying = false;
+
+
+// ==========================================
+// MIXTAPE SONGS
+// ==========================================
+
+const mixtapeSongs = [
+    {
+        title: "Balisong",
+        artist: "Rico Blanco",
+        file: "balisong.mp3",
+        note: "For making my days more colorful and meaningful."
+    },
+    {
+        title: "Ikaw Pa Rin",
+        artist: "mrld",
+        file: "ikaw-pa-rin.mp3",
+        note: "A little reminder that my heart keeps choosing you."
+    },
+    {
+        title: "Gusto",
+        artist: "Zack Tabudlo",
+        file: "gusto.mp3",
+        note: "Because there's so much about you that I adore."
+    },
+    {
+        title: "Sinta",
+        artist: "Rob Deniel",
+        file: "sinta.mp3",
+        note: "For the softness and happiness you bring into my days."
+    },
+    {
+        title: "Mundo",
+        artist: "IV of Spades",
+        file: "mundo.mp3",
+        note: "A song for the little world we've made together."
+    },
+    {
+        title: "Ikaw Lang",
+        artist: "Nobita",
+        file: "ikaw-lang.mp3",
+        note: "And, well, this one's for you. Always you."
+    }
+];
+
+
+// ==========================================
+// SHOW GIFT SECTION
+// ==========================================
+
+function showGiftSection() {
+    if (!birthdayAnimation || !giftSection) return;
+
+    birthdayAnimation.classList.add("hidden");
+    giftSection.classList.remove("hidden");
+
+    giftSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+    terminalStatus.textContent =
+        "A FEW MORE SURPRISES UNLOCKED.";
+}
+
+if (continueGiftsButton) {
+    continueGiftsButton.addEventListener("click", showGiftSection);
+}
+
+
+// ==========================================
+// GIFT BOX: FIVE CLICKS
+// ==========================================
+
+if (giftBoxButton && giftBoxCount && giftReveal) {
+    giftBoxButton.addEventListener("click", () => {
+        if (giftClicks >= giftClicksNeeded) return;
+
+        giftClicks++;
+
+        giftBoxCount.textContent =
+            `${giftClicks} / ${giftClicksNeeded}`;
+
+        giftBoxButton.classList.add("opening");
+
+        if (giftClicks < giftClicksNeeded) {
+            if (giftInstruction) {
+                giftInstruction.textContent =
+                    `almost there... ${giftClicksNeeded - giftClicks} more taps!`;
+            }
+
+            return;
+        }
+
+        giftBoxButton.disabled = true;
+
+        if (giftInstruction) {
+            giftInstruction.textContent =
+                "opening your little surprise... ♡";
+        }
+
+        setTimeout(() => {
+            giftBoxButton.classList.add("hidden");
+            giftReveal.classList.remove("hidden");
+
+            if (giftInstruction) {
+                giftInstruction.textContent =
+                    "a little something for you ♡";
+            }
+
+            terminalStatus.textContent =
+                "GIFTS UNLOCKED. OPEN YOUR MIXTAPE.";
+
+            giftReveal.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }, 700);
+    });
+}
+
+
+// ==========================================
+// SELECT A SONG
+// ==========================================
+
+function selectSong(index, shouldPlay = false) {
+    if (!mixtapeAudio || !mixtapeSongs.length) return;
+
+    currentSongIndex =
+        (index + mixtapeSongs.length) % mixtapeSongs.length;
+
+    const song = mixtapeSongs[currentSongIndex];
+
+    if (songTitle) {
+        songTitle.textContent = song.title;
+    }
+
+    if (songArtist) {
+        songArtist.textContent = song.artist;
+    }
+
+    if (songNote) {
+        songNote.textContent = song.note;
+    }
+
+    songItems.forEach((item, itemIndex) => {
+        item.classList.toggle(
+            "active",
+            itemIndex === currentSongIndex
+        );
+    });
+
+    mixtapeAudio.pause();
+
+    mixtapeAudio.src = `./${song.file}`;
+    mixtapeAudio.load();
+
+    if (playSongButton) {
+        playSongButton.textContent = "PLAY ▶";
+    }
+
+    if (audioStatus) {
+        audioStatus.textContent =
+            `selected: ${song.title} — press play ♡`;
+    }
+
+    if (shouldPlay) {
+        playCurrentSong();
+    }
+}
+
+
+// ==========================================
+// PLAY CURRENT SONG
+// ==========================================
+
+async function playCurrentSong() {
+    if (!mixtapeAudio) return;
+
+    if (backgroundMusic && !backgroundMusic.paused) {
+        backgroundWasPlaying = true;
+        backgroundMusic.pause();
+    }
+
+    try {
+        await mixtapeAudio.play();
+
+        if (playSongButton) {
+            playSongButton.textContent = "PAUSEⅡ";
+        }
+
+        if (audioStatus) {
+            audioStatus.textContent =
+                `now playing: ${mixtapeSongs[currentSongIndex].title} ♡`;
+        }
+
+    } catch (error) {
+        if (playSongButton) {
+            playSongButton.textContent = "PLAY ▶";
+        }
+
+        if (audioStatus) {
+            audioStatus.textContent =
+                `couldn't play ${mixtapeSongs[currentSongIndex].file}. Check that the MP3 is uploaded to the repository with that exact filename.`;
+        }
+
+        console.error("Mixtape playback failed:", error);
+    }
+}
+
+
+// ==========================================
+// PAUSE CURRENT SONG
+// ==========================================
+
+function pauseCurrentSong() {
+    if (!mixtapeAudio) return;
+
+    mixtapeAudio.pause();
+
+    if (playSongButton) {
+        playSongButton.textContent = "PLAY ▶";
+    }
+
+    if (audioStatus) {
+        audioStatus.textContent = "paused ♡";
+    }
+}
+
+
+// ==========================================
+// OPEN MIXTAPE PLAYER
+// ==========================================
+
+function openMixtape() {
+    if (!mixtapePlayer) return;
+
+    backgroundWasPlaying =
+        Boolean(backgroundMusic && !backgroundMusic.paused);
+
+    mixtapePlayer.classList.remove("hidden");
+
+    mixtapePlayer.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+    terminalStatus.textContent =
+        "MIXTAPE PLAYER OPENED.";
+}
+
+
+// ==========================================
+// CLOSE MIXTAPE PLAYER
+// ==========================================
+
+function closeMixtape() {
+    if (mixtapeAudio) {
+        mixtapeAudio.pause();
+    }
+
+    if (mixtapePlayer) {
+        mixtapePlayer.classList.add("hidden");
+    }
+
+    if (playSongButton) {
+        playSongButton.textContent = "PLAY ▶";
+    }
+
+    if (backgroundWasPlaying && backgroundMusic) {
+        backgroundMusic.play().catch((error) => {
+            console.log(
+                "Background music could not resume:",
+                error
+            );
+        });
+    }
+
+    if (audioStatus) {
+        audioStatus.textContent =
+            "choose a song below to begin.";
+    }
+
+    terminalStatus.textContent =
+        "BACK TO YOUR GIFTS.";
+}
+
+
+// ==========================================
+// MIXTAPE BUTTON LISTENERS
+// ==========================================
+
+if (mixtapeOpenButton) {
+    mixtapeOpenButton.addEventListener("click", openMixtape);
+}
+
+if (closeMixtapeButton) {
+    closeMixtapeButton.addEventListener("click", closeMixtape);
+}
+
+
+// ==========================================
+// PLAY / PAUSE BUTTON
+// ==========================================
+
+if (playSongButton) {
+    playSongButton.addEventListener("click", () => {
+        if (!mixtapeAudio) return;
+
+        if (mixtapeAudio.paused) {
+            playCurrentSong();
+        } else {
+            pauseCurrentSong();
+        }
+    });
+}
+
+
+// ==========================================
+// PREVIOUS SONG
+// ==========================================
+
+if (previousSongButton) {
+    previousSongButton.addEventListener("click", () => {
+        selectSong(currentSongIndex - 1, true);
+    });
+}
+
+
+// ==========================================
+// NEXT SONG
+// ==========================================
+
+if (nextSongButton) {
+    nextSongButton.addEventListener("click", () => {
+        selectSong(currentSongIndex + 1, true);
+    });
+}
+
+
+// ==========================================
+// SELECT SONG FROM LIST
+// ==========================================
+
+songItems.forEach((item) => {
+    item.addEventListener("click", () => {
+        const selectedIndex = Number(item.dataset.song);
+
+        if (
+            Number.isInteger(selectedIndex) &&
+            mixtapeSongs[selectedIndex]
+        ) {
+            selectSong(selectedIndex, true);
+        }
+    });
+});
+
+
+// ==========================================
+// AUTOMATICALLY PLAY NEXT SONG
+// ==========================================
+
+if (mixtapeAudio) {
+    mixtapeAudio.addEventListener("ended", () => {
+        selectSong(currentSongIndex + 1, true);
+    });
+
+    mixtapeAudio.addEventListener("error", () => {
+        if (audioStatus) {
+            audioStatus.textContent =
+                `audio file not found: ${mixtapeSongs[currentSongIndex].file}. Make sure it is uploaded beside index.html.`;
+        }
+    });
+}
+
+
+// ==========================================
+// PREPARE FIRST SONG
+// ==========================================
+
+if (mixtapeAudio && songTitle && songArtist && songNote) {
+    selectSong(0, false);
+}
