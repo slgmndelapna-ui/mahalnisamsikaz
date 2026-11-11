@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&display=swap');
 
 :root {
@@ -908,10 +907,661 @@ footer {
         transition-duration: .01ms !important;
     }
 }
-TweenMax.to("bow", 0.3, {
-    scaleX: 1,
-    transformOrigin: "right center",
-});
-TweenMax.to(".arrow-angle use", 0.3,
-                        { opacity: 0});
-TweenMax.to(".#arc", 0.2, { opacity: 0});
+
+/* =========================================================
+   GIFT SECTION
+   ========================================================= */
+
+.birthday-stage:has(.gift-section:not(.hidden)) {
+    overflow-y: auto;
+    align-items: flex-start;
+}
+
+.gift-section {
+    width: min(100%, 760px);
+    margin: auto;
+    padding: 34px 12px 42px;
+    text-align: center;
+    animation: prompt-in .8s ease both;
+}
+
+.gift-heading {
+    color: #ffe3f0;
+    font-size: clamp(30px, 6vw, 48px);
+    margin: 8px 0 12px;
+    text-shadow: 0 0 24px #e76ba866;
+}
+
+.gift-instruction {
+    color: #cdaecb;
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 0 auto 26px;
+}
+
+.gift-box-button {
+    position: relative;
+    display: block;
+    width: 190px;
+    height: 175px;
+    margin: 18px auto 12px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    transform-origin: center bottom;
+}
+
+.gift-box-button:hover {
+    background: transparent;
+    color: inherit;
+    transform: translateY(-4px);
+}
+
+.gift-box-body {
+    position: absolute;
+    left: 25px;
+    bottom: 8px;
+    width: 140px;
+    height: 105px;
+    border: 2px solid #f6c2d9;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #d95f9a, #9e356f);
+    box-shadow: 0 12px 28px #08041180, inset 0 0 18px #ffb6d733;
+}
+
+.gift-box-lid {
+    position: absolute;
+    z-index: 2;
+    left: 17px;
+    bottom: 105px;
+    width: 156px;
+    height: 27px;
+    border: 2px solid #ffe0ed;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #f3a2c7, #d85d98);
+    transform-origin: 12% 100%;
+    transition: transform .7s cubic-bezier(.2,.8,.2,1);
+}
+
+.gift-box-ribbon-vertical,
+.gift-box-ribbon-horizontal {
+    position: absolute;
+    z-index: 3;
+    background: #ffe6a8;
+    box-shadow: 0 0 8px #ffe6a855;
+}
+
+.gift-box-ribbon-vertical {
+    left: 88px;
+    bottom: 8px;
+    width: 15px;
+    height: 124px;
+}
+
+.gift-box-ribbon-horizontal {
+    left: 25px;
+    bottom: 52px;
+    width: 140px;
+    height: 13px;
+}
+
+.gift-box-bow {
+    position: absolute;
+    z-index: 4;
+    bottom: 127px;
+    width: 34px;
+    height: 25px;
+    border: 5px solid #ffe6a8;
+    border-radius: 80% 15% 80% 15%;
+}
+
+.gift-box-bow-left {
+    left: 65px;
+    transform: rotate(25deg);
+}
+
+.gift-box-bow-right {
+    left: 94px;
+    transform: scaleX(-1) rotate(25deg);
+}
+
+.gift-box-count {
+    color: #f3a9ce;
+    font: 11px 'DM Mono', monospace;
+    letter-spacing: 1px;
+    margin-top: 8px;
+}
+
+.gift-box-button.opening .gift-box-lid {
+    transform: translate(-18px, -45px) rotate(-28deg);
+}
+
+.gift-box-button.opening {
+    animation: gift-pop .55s ease;
+}
+
+@keyframes gift-pop {
+    0%, 100% { transform: translateY(0) scale(1); }
+    45% { transform: translateY(-12px) scale(1.04); }
+}
+
+.gift-reveal {
+    margin: 28px auto 0;
+    animation: reveal .9s ease both;
+}
+
+.gift-reveal-caption {
+    color: #ffe3f0;
+    font: italic 600 20px 'Playfair Display', serif;
+    margin-bottom: 25px;
+}
+
+.gift-items {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(20px, 5vw, 45px);
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.gift-small-note {
+    color: #cdaecb;
+    font-size: 12px;
+    line-height: 1.8;
+    margin: 26px auto 0;
+}
+
+/* =========================================================
+   DECORATIVE DIGITAL BOUQUET
+   ========================================================= */
+
+.bouquet-art {
+    position: relative;
+    width: min(100%, 245px);
+    height: 260px;
+    margin: 0 auto;
+    filter: drop-shadow(0 12px 18px #09020d66);
+}
+
+.bouquet-flower {
+    position: absolute;
+    z-index: 2;
+    width: 76px;
+    height: 76px;
+}
+
+.bouquet-flower i {
+    position: absolute;
+    left: 29px;
+    top: 3px;
+    width: 20px;
+    height: 35px;
+    border-radius: 50% 50% 45% 45%;
+    background: linear-gradient(#ffe4ed, #e98bb7);
+    transform-origin: 50% 35px;
+    box-shadow: inset -3px -3px 5px #a94c7c33;
+}
+
+.bouquet-flower i:nth-child(1) { transform: rotate(0deg); }
+.bouquet-flower i:nth-child(2) { transform: rotate(72deg); }
+.bouquet-flower i:nth-child(3) { transform: rotate(144deg); }
+.bouquet-flower i:nth-child(4) { transform: rotate(216deg); }
+.bouquet-flower i:nth-child(5) { transform: rotate(288deg); }
+
+.bouquet-flower b {
+    position: absolute;
+    z-index: 2;
+    left: 35px;
+    top: 29px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #f8d36f;
+    box-shadow: 0 0 8px #f8d36f99;
+}
+
+.flower-one { left: 20px; top: 20px; transform: scale(1.08); }
+.flower-two { left: 103px; top: 2px; transform: scale(.92); }
+.flower-three { left: 145px; top: 70px; transform: scale(1.02); }
+.flower-four { left: 55px; top: 93px; transform: scale(.88); }
+
+.flower-two i { background: linear-gradient(#fff0c7, #e8a6a5); }
+.flower-three i { background: linear-gradient(#f9d5e7, #cf79a8); }
+.flower-four i { background: linear-gradient(#fff0f5, #e8a1c1); }
+
+.bouquet-stems {
+    position: absolute;
+    z-index: 1;
+    left: 69px;
+    top: 92px;
+    width: 105px;
+    height: 135px;
+    background:
+        linear-gradient(78deg, transparent 0 47%, #6b9b70 48% 50%, transparent 51%),
+        linear-gradient(96deg, transparent 0 48%, #82aa75 49% 51%, transparent 52%),
+        linear-gradient(112deg, transparent 0 48%, #527f5e 49% 51%, transparent 52%),
+        linear-gradient(65deg, transparent 0 48%, #719c68 49% 51%, transparent 52%);
+}
+
+.bouquet-wrap {
+    position: absolute;
+    z-index: 3;
+    left: 55px;
+    bottom: 4px;
+    width: 145px;
+    height: 100px;
+    clip-path: polygon(8% 0, 92% 0, 65% 100%, 35% 100%);
+    background: linear-gradient(110deg, #f6d4df, #c76e9b 52%, #f0bfd3);
+    border: 1px solid #f9d8e6;
+}
+
+.bouquet-ribbon {
+    position: absolute;
+    z-index: 4;
+    left: 112px;
+    bottom: 40px;
+    width: 34px;
+    height: 22px;
+    border: 5px solid #f4c1d5;
+    border-radius: 70% 15% 70% 15%;
+    transform: rotate(35deg);
+}
+
+.bouquet-ribbon::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 7px;
+    width: 28px;
+    height: 20px;
+    border: 5px solid #f4c1d5;
+    border-radius: 15% 70% 15% 70%;
+    transform: rotate(-65deg);
+}
+
+/* =========================================================
+   CASSETTE TEASER
+   ========================================================= */
+
+.mixtape-open {
+    position: relative;
+    display: block;
+    width: min(100%, 245px);
+    height: 155px;
+    margin: 0 auto;
+    padding: 12px;
+    overflow: visible;
+    border: 2px solid #d6a5bd;
+    border-radius: 12px;
+    color: #3a2034;
+    background: linear-gradient(145deg, #f2d5df, #c987a9);
+    box-shadow: 0 14px 28px #08041180, inset 0 2px 5px #fff8;
+    transform: rotate(3deg);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.mixtape-open:hover {
+    color: #3a2034;
+    background: linear-gradient(145deg, #f7e1e8, #d99ab8);
+    transform: translateY(-9px) rotate(0deg);
+    box-shadow: 0 22px 34px #08041199;
+}
+
+.cassette-label {
+    display: block;
+    padding: 3px 0 8px;
+    color: #70415c;
+    font: 9px 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+}
+
+.cassette-window {
+    position: absolute;
+    left: 48px;
+    top: 43px;
+    width: 145px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 2px solid #8b5d77;
+    border-radius: 7px;
+    background: #4c3449;
+}
+
+.cassette-window i,
+.player-cassette-window span {
+    width: 26px;
+    height: 26px;
+    border: 5px solid #e9c5d5;
+    border-radius: 50%;
+    background: #5b4056;
+    box-shadow: inset 0 0 0 3px #b47c9b;
+}
+
+.cassette-reel {
+    position: absolute;
+    top: 54px;
+    width: 18px;
+    height: 18px;
+    border: 4px solid #e7c6d5;
+    border-radius: 50%;
+    background: #7c526e;
+}
+
+.cassette-reel-left { left: 70px; }
+.cassette-reel-right { right: 70px; }
+
+.cassette-bottom-line {
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    bottom: 35px;
+    height: 1px;
+    background: #98647f;
+}
+
+.cassette-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 17px;
+    color: #56334b;
+    font: italic 600 11px 'Playfair Display', serif;
+}
+
+.cassette-tap-hint {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -27px;
+    color: #f3a9ce;
+    font: 9px 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+}
+
+/* =========================================================
+   MIXTAPE PLAYER
+   ========================================================= */
+
+.mixtape-player {
+    width: min(100%, 560px);
+    margin: 0 auto;
+    padding: clamp(20px, 5vw, 34px);
+    border: 1px solid #754765;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #211326, #100b19 75%);
+    box-shadow: 0 20px 60px #05020b99, 0 0 35px #c45b9230;
+    text-align: center;
+    animation: reveal .7s ease both;
+}
+
+.mixtape-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: #f3a9ce;
+    font: 10px 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+    text-align: left;
+}
+
+.close-mixtape {
+    padding: 8px 10px;
+    border-color: #98647f;
+    color: #e8bad3;
+    font-size: 9px;
+}
+
+.close-mixtape:hover {
+    background: #98647f;
+    color: #fff;
+}
+
+.mixtape-player h2 {
+    color: #ffe3f0;
+    font: italic 600 clamp(25px, 5vw, 34px) 'Playfair Display', serif;
+    margin: 24px 0 8px;
+}
+
+.mixtape-subtitle {
+    color: #cdaecb;
+    font-size: 12px;
+    margin-bottom: 24px;
+}
+
+.player-cassette {
+    position: relative;
+    width: min(100%, 300px);
+    height: 160px;
+    margin: 0 auto 26px;
+    padding: 15px;
+    border: 2px solid #e4b9cc;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #f0d6e0, #c987a9);
+    box-shadow: 0 12px 24px #05020b80, inset 0 2px 5px #fff9;
+}
+
+.player-cassette-label {
+    color: #70415c;
+    font: 9px 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+}
+
+.player-cassette-window {
+    position: absolute;
+    left: 50%;
+    top: 48px;
+    width: 180px;
+    height: 55px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    transform: translateX(-50%);
+    border: 2px solid #8b5d77;
+    border-radius: 7px;
+    background: #4c3449;
+}
+
+.player-cassette-footer {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    color: #70415c;
+    font: 8px 'DM Mono', monospace;
+    letter-spacing: 2px;
+}
+
+.player-reels {
+    position: absolute;
+    left: 50%;
+    top: 65px;
+    width: 128px;
+    display: flex;
+    justify-content: space-between;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.player-reels i {
+    width: 22px;
+    height: 22px;
+    border: 5px solid #e9c5d5;
+    border-radius: 50%;
+    background: #5b4056;
+    box-shadow: inset 0 0 0 3px #b47c9b;
+}
+
+.song-now-playing {
+    padding: 18px 12px;
+    border-top: 1px solid #754765;
+    border-bottom: 1px solid #754765;
+}
+
+.now-label {
+    color: #f3a9ce;
+    font: 9px 'DM Mono', monospace;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.song-now-playing h3 {
+    color: #fff0f6;
+    font: italic 600 25px 'Playfair Display', serif;
+    margin-bottom: 5px;
+}
+
+#song-artist {
+    color: #f3a9ce;
+    font-size: 12px;
+}
+
+.song-note {
+    max-width: 390px;
+    margin: 13px auto 0;
+    color: #cdaecb;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.song-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 22px 0 10px;
+}
+
+.song-controls button {
+    min-width: 48px;
+    padding: 12px 15px;
+    border-color: #bd7ca1;
+    color: #f5c5dc;
+}
+
+.song-controls .play-song-button {
+    min-width: 112px;
+    border-color: #f3a9ce;
+    background: #f3a9ce;
+    color: #210c22;
+}
+
+.song-controls .play-song-button:hover {
+    background: #ffd5e8;
+}
+
+.audio-status {
+    min-height: 18px;
+    color: #b995ad;
+    font: 10px 'DM Mono', monospace;
+    margin: 8px 0 18px;
+}
+
+.song-list {
+    display: grid;
+    gap: 7px;
+    text-align: left;
+}
+
+.song-item {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) 24px;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid #59364f;
+    border-radius: 7px;
+    background: #1a1021;
+    color: #e8d4e1;
+    text-align: left;
+    letter-spacing: 0;
+    transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+.song-item:hover,
+.song-item.active {
+    border-color: #d88bb2;
+    background: #352039;
+    color: #ffe3f0;
+    transform: translateX(3px);
+}
+
+.song-item > span:first-child {
+    color: #c987a9;
+    font: 10px 'DM Mono', monospace;
+}
+
+.song-item b,
+.song-item small {
+    display: block;
+}
+
+.song-item b {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.song-item small {
+    margin-top: 3px;
+    color: #b995ad;
+    font-size: 10px;
+}
+
+.song-item > span:last-child {
+    color: #f3a9ce;
+    text-align: center;
+    font-size: 16px;
+}
+
+.mixtape-ending {
+    color: #cdaecb;
+    font: italic 12px 'Playfair Display', serif;
+    line-height: 1.8;
+    margin-top: 24px;
+}
+
+/* Keep the gift/player readable on smaller screens. */
+@media (max-width: 550px) {
+    .gift-section {
+        padding: 25px 8px 35px;
+    }
+
+    .gift-items {
+        grid-template-columns: 1fr;
+        gap: 34px;
+    }
+
+    .bouquet-art {
+        height: 235px;
+        transform: scale(.92);
+        transform-origin: center top;
+        margin-bottom: -12px;
+    }
+
+    .mixtape-open {
+        width: min(100%, 235px);
+    }
+
+    .mixtape-player {
+        padding: 20px 14px;
+    }
+
+    .mixtape-topline {
+        align-items: flex-start;
+        font-size: 9px;
+    }
+
+    .close-mixtape {
+        font-size: 8px;
+        padding: 7px 8px;
+    }
+
+    .song-controls {
+        gap: 8px;
+    }
+}
