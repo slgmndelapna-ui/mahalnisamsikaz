@@ -1,24 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-
-            scale=1.0">
-            <title>mahal ni sam si kaz</title>
-            <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mahal ni sam si kaz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-        <main class="workspace" id="main-workspace">
+    <main class="workspace" id="main-workspace">
 
-            <header class="topbar">
-                <div class="window-controls">
-                    <span></span><span></span><span></span>
+        <header class="topbar">
+            <div class="window-controls">
+                <span></span><span></span><span></span>
+            </div>
+            <p>#mahalnisamsikaz — interactive experience</p>
+        </header>
+
+        <section class="editor">
+            <div class="editor-header">
+                <span>♡ index.js</span>
+                <span class="status">● LIVE SESSION</span>
+            </div>
+
+            <div class="code-area">
+                <div class="line-numbers">
+                    01<br>02<br>03<br>04<br>05<br>06<br>07<br>08
                 </div>
-                <p>#mahalnisamsikaz - interactive experience</p>
-            </header>
 
-            <section class="editor">
-                <div class="editor-header">
-                    <span>index.js</span>
-                    <span class="status">* LIVE SESSION</span>
+                <div class="code">
+                    <p><span class="purple">const</span> <span class="blue">recipient</span> = <span class="green">"Kaz"</span>;</p>
+                    <p><span class="purple">const</span> <span class="blue">sender</span> = <span class="green">"Sam"</span>;</p>
+                    <br>
+                    <p><span class="gray">// initializing something special...</span></p>
+                    <p><span class="purple">function</span> <span class="yellow">beginExperience</span>() {</p>
+                    <p class="indent"><span class="purple">return</span> <span class="green">"#humanda"</span>;</p>
+                    <p>}</p>
+                </div>
+            </div>
+
+            <div class="terminal">
+                <p class="terminal-label">TERMINAL</p>
+                <p><span class="green">@samloveskaz</span>:~$ initializing experience...</p>
+                <p id="terminal-status">Waiting for user interaction<span class="cursor">_</span></p>
+            </div>
+        </section>
+
+        <section class="interaction">
+            <p class="eyebrow">A MESSAGE FROM SAM</p>
+
+            <h1>go or no go?</h1>
+
+            <p class="subtitle">
+                I deserve a kiss after this.
+                plsplspls. I dont know how to send emojis on laptop mb bro.
+            </p>
+
+            <div class="choices">
+                <button id="yes-button">YES, PROCEED →</button>
+                <button id="no-button">NO, NOT YET</button>
+            </div>
+
+            <div id="response"></div>
+
+            <div id="next-interaction" class="hidden">
+                <h2 id="next-question">lowkey not impressive but i tried guys</h2>
+                <p id="next-subtitle">i still love you though bebe, ket makita ni ate to sa files, SAY YES PLS</p>
+
+                <div class="choices">
+                    <button id="next-yes">YES</button>
+                    <button id="next-no">NO</button>
+                </div>
+            </div>
+
+            <div id="final-reveal" class="hidden">
+                <p class="eyebrow">[ FINAL TRANSMISSION ]</p>
+                <h2>the end but not our end.</h2>
+
+                <div class="final-message">
+                    <p id="final-message-text"></p>
+                </div>
+
+                <p class="signature">— Sam</p>
+
+                <button id="proceed-button" class="hidden">
+                    PROCEED ♡ →
+                </button>
+            </div>
+        </section>
+
+        <footer>BUILT BY DA GOAT</footer>
+    </main>
+
+    <!-- Birthday surprise screen -->
+    <section id="birthday-stage" class="birthday-stage hidden" aria-label="Birthday surprise">
+
+        <div class="open-prompt" id="open-prompt">
+            <p class="stage-eyebrow">A LITTLE SOMETHING FOR YOU</p>
+            <h1>open?</h1>
+            <p>i made one more thing, langga.</p>
+
+            <div class="choices">
+                <button id="open-yes">YES, OPEN IT ♡</button>
+                <button id="open-no">NO, NEVER &gt;:(</button>
+            </div>
+
+            <p class="stage-note" id="open-note" aria-live="polite"></p>
+        </div>
+
+        <div id="birthday-animation" class="birthday-animation hidden">
+
+            <p class="birthday-heading">Birthday Surprise</p>
+
+            <div class="sky" aria-hidden="true">
+                <div class="heart-target">♥</div>
+
+                <div class="bow">
+                    <span class="bow-loop bow-left"></span>
+                    <span class="bow-loop bow-right"></span>
+                    <span class="bow-grip"></span>
+                    <span class="bow-string"></span>
+                    <span class="arrow"></span>
+                </div>
+
+                <div class="arrow-trail"></div>
+
+                <!-- CHOCOLATE BIRTHDAY CAKE -->
+                <div class="cake-wrap chocolate-cake">
+                    <div class="cake-plate"></div>
+
+                    <div class="cake cake-bottom">
+                        <span></span>
+                    </div>
+
+                    <div class="cake cake-middle">
+                        <span></span>
+                    </div>
+
+                    <div class="cake cake-top">
+                        <span></span>
+                    </div>
+
+                    <div class="cake-decoration">
+                        <span>♡</span>
+                        <span>♥</span>
+                        <span>♡</span>
+                    </div>
+
+                    <div class="candle">
+                        <i></i>
+                    </div>
+                </div>
+                <!-- END CHOCOLATE CAKE -->
+
+                <div class="floating-balloons" aria-hidden="true">
+                    <i>●</i><i>●</i><i>●</i>
+                    <i>●</i><i>●</i><i>●</i>
+                </div>
+
+                <div class="heart-rain" aria-hidden="true">
+                    <b>♥</b><b>♥</b><b>♥</b>
+                    <b>♥</b><b>♥</b><b>♥</b>
+                    <b>♥</b><b>♥</b><b>♥</b>
+                    <b>♥</b><b>♥</b><b>♥</b>
+                    <b>♥</b><b>♥</b><b>♥</b>
+                    <b>♥</b><b>♥</b><b>♥</b>
+                </div>
+
+                <div class="birthday-script">
+                    Happy Birthday, Kaziech
+                </div>
+            </div>
+
+            <p class="birthday-caption">
+                boomboomboom, just for you ♡
+            </p>
+
+            <div class="birthday-actions">
+                <button id="replay-birthday" class="replay-button">
+                    REPLAY SURPRISE ↻
+                </button>
+
+                <button id="continue-gifts" class="continue-gifts-button">
+                    THERE'S MORE FOR YOU →
+                </button>
+            </div>
+        </div>
+
+        <!-- THE GIFT BOX REVEAL -->
+        <section id="gift-section" class="gift-section hidden" aria-label="Your gifts">
+
+            <p class="stage-eyebrow">A LITTLE MORE, JUST FOR YOU</p>
+
+            <h2 class="gift-heading">idrk</h2>
+
+            <p class="gift-instruction" id="gift-instruction">
+                hint: taptaptaptaptap
+            </p>
+
+            <button
+                id="gift-box-button"
+                class="gift-box-button"
+                type="button"
+                aria-label="Open the gift box"
+            >
+                <span class="gift-box-lid"></span>
+                <span class="gift-box-body"></span>
+                <span class="gift-box-ribbon-vertical"></span>
+                <span class="gift-box-ribbon-horizontal"></span>
+                <span class="gift-box-bow gift-box-bow-left"></span>
+                <span class="gift-box-bow gift-box-bow-right"></span>
+                <span class="gift-box-count" id="gift-box-count">0 / 5</span>
+            </button>
+
+            <div id="gift-reveal" class="gift-reveal hidden">
+
+                <p class="gift-reveal-caption">sirprize</p>
+
+                <div class="gift-items">
+
+                    <!-- DECORATIVE DIGITAL BOUQUET -->
+                    <div
+                        class="bouquet-art"
+                        aria-label="A digital bouquet of flowers"
+                        role="img"
+                    >
+                        <div class="bouquet-flower flower-one">
+                            <i></i><i></i><i></i><i></i><i></i><b></b>
+                        </div>
+
+                        <div class="bouquet-flower flower-two">
+                            <i></i><i></i><i></i><i></i><i></i><b></b>
+                        </div>
+
+                        <div class="bouquet-flower flower-three">
+                            <i></i><i></i><i></i><i></i><i></i><b></b>
+                        </div>
+
+                        <div class="bouquet-flower flower-four">
+                            <i></i><i></i><i></i><i></i><i></i><b></b>
+                        </div>
+
+                        <div class="bouquet-stems"></div>
+                        <div class="bouquet-wrap"></div>
+                        <div class="bouquet-ribbon"></div>
+                    </div>
+
+                    <!-- CLICKABLE MIXTAPE -->
+                    <button
+                        id="mixtape-open"
+                        class="mixtape-open"
+                        type="button"
+                        aria-label="Open the mixtape"
+                    >
+                        <span class="cassette-label">FOR KAZ</span>
+                        <span class="cassette-window">
+                            <i></i><i></i>
+                        </span>
+                        <span class="cassette-reel cassette-reel-left"></span>
+                        <span class="cassette-reel cassette-reel-right"></span>
+                        <span class="cassette-bottom-line"></span>
+                        <span class="cassette-title">a little collection of you</span>
+                        <span class="cassette-tap-hint">OPEN MIXTAPE ↗</span>
+                    </button>
+
+                </div>
+
+                <p class="gift-small-note">
+                    one bouquet, and six songs that i dedicated to you.
+                </p>
+            </div>
+
+            <!-- MIXTAPE PLAYER -->
+            <section
+                id="mixtape-player"
+                class="mixtape-player hidden"
+                aria-label="Mixtape player"
+            >
+
+                <div class="mixtape-topline">
+                    <span>♡ MIXTAPE</span>
+                    <button
+                        id="close-mixtape"
+                        class="close-mixtape"
+                        type="button"
+                    >
+                        BACK TO GIFTS ✕
+                    </button>
+                </div>
+
+                <h2>a little collection of you</h2>
+
+                <p class="mixtape-subtitle">
+                    six songs. six little reminders of you.
+                </p>
+
+                <div class="player-cassette" aria-hidden="true">
+                    <div class="player-cassette-label">
+                        KAZIECH · MIXTAPE NO. 01
+                    </div>
+
+                    <div class="player-cassette-window">
+                        <span></span><span></span>
+                    </div>
+
+                    <div class="player-reels">
+                        <i></i><i></i>
+                    </div>
+
+                    <div class="player-cassette-footer">
+                        REC ● PLAY ♡ REW
+                    </div>
+                </div>
+
+                <div class="song-now-playing">
+                    <p class="now-label">NOW SELECTED</p>
+                    <h3 id="song-title">Balisong</h3>
+                    <p id="song-artist">Rico Blanco</p>
+
+                    <p id="song-note" class="song-note">
+                        For making my days more colorful and meaningful.
+                    </p>
+                </div>
+
+                <div class="song-controls">
+                    <button
+                        id="previous-song"
+                        type="button"
+                        aria-label="Previous song"
+                    >
+                        |◀
+                    </button>
+
+                    <button
+                        id="play-song"
+                        class="play-song-button"
+                        type="button"
+                    >
+                        PLAY ▶
+                    </button>
+
+                    <button
+                        id="next-song"
+                        type="button"
+                        aria-label="Next song"
+                    >
+                        ▶|
+                    </button>
+                </div>
+
+                <p id="audio-status" class="audio-status" aria-live="polite">
+                    choose a song below to begin.
+                </p>
+
+                <div id="song-list" class="song-list">
+
+                    <button class="song-item active" data-song="0" type="button">
+                        <span>01</span>
+                        <span>
+                            <b>Balisong</b>
+                            <small>Rico Blanco</small>
+                        </span>
+                        <span>♡</span>
+                    </button>
+
+                    <button class="song-item" data-song="1" type="button">
+                        <span>02</span>
+                        <span>
+                            <b>Ikaw Pa Rin</b>
+                            <small>mrld</small>
+                        </span>
+                        <span>♡</span>
+                    </button>
+
+                    <button class="song-item" data-song="2" type="button">
+                        <span>03</span>
+                        <span>
+                            <b>Gusto</b>
+                            <small>Zack Tabudlo</small>
+                        </span>
+                        <span>♡</span>
+                    </button>
+
+                    <button class="song-item" data-song="3" type="button">
+                        <span>04</span>
+                        <span>
+                            <b>Sinta</b>
+                            <small>Rob Deniel</small>
+                        </span>
+                        <span>♡</span>
+                    </button>
+
+                    <button class="song-item" data-song="4" type="button">
+                        <span>05</span>
+                        <span>
+                            <b>Mundo</b>
+                            <small>IV of Spades</small>
+                        </span>
+                        <span>♡</span>
+                    </button>
+
+                    <button class="song-item" data-song="5" type="button">
+                        <span>06</span>
+                        <span>
+                            <b>Ikaw Lang</b>
+                            <small>Nobita</small>
+                        </span>
+                        <span>♡</span>
+                    </button>
+
+                </div>
+
+                <p class="mixtape-ending">
+                    i hope you like the little collection i made for you. — sam
+                </p>
+            </section>
+        </section>
+    </section>
+
+    <!-- BACKGROUND MUSIC -->
+    <audio id="backgroundMusic" preload="auto" loop>
+        <source src="./song.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- MIXTAPE MUSIC -->
+    <audio id="mixtapeAudio" preload="none"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
