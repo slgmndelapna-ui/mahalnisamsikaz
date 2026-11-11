@@ -1,3 +1,4 @@
+
 // ==========================================
 // ELEMENT REFERENCES
 // ==========================================
@@ -29,6 +30,31 @@ const birthdayBow = document.querySelector(".bow");
 
 const backgroundMusic = document.getElementById("backgroundMusic");
 
+// Gift section
+const continueGiftsButton = document.getElementById("continue-gifts");
+const giftSection = document.getElementById("gift-section");
+const giftBoxButton = document.getElementById("gift-box-button");
+const giftBoxCount = document.getElementById("gift-box-count");
+const giftInstruction = document.getElementById("gift-instruction");
+const giftReveal = document.getElementById("gift-reveal");
+
+// Mixtape
+const mixtapeOpenButton = document.getElementById("mixtape-open");
+const mixtapePlayer = document.getElementById("mixtape-player");
+const closeMixtapeButton = document.getElementById("close-mixtape");
+const mixtapeAudio = document.getElementById("mixtapeAudio");
+
+const songTitle = document.getElementById("song-title");
+const songArtist = document.getElementById("song-artist");
+const songNote = document.getElementById("song-note");
+const audioStatus = document.getElementById("audio-status");
+
+const playSongButton = document.getElementById("play-song");
+const previousSongButton = document.getElementById("previous-song");
+const nextSongButton = document.getElementById("next-song");
+
+const songItems = document.querySelectorAll(".song-item");
+
 
 // ==========================================
 // VARIABLES
@@ -44,6 +70,12 @@ let pullDistance = 0;
 let surpriseStarted = false;
 
 const attemptBeforeDisappearing = 5;
+
+const giftClicksNeeded = 5;
+let giftClicks = 0;
+
+let currentSongIndex = 0;
+let backgroundWasPlaying = false;
 
 
 // ==========================================
@@ -96,17 +128,50 @@ yun lang, hafi happy haps birthday, baby ko.
 
 function playBackgroundMusic() {
     if (!backgroundMusic) {
-        console.error("Music element not found. Check index.html.");
+        console.error("Background music element not found.");
         return;
     }
 
-    backgroundMusic.volume = 0.7;
     backgroundMusic.loop = true;
+    backgroundMusic.volume = 0.7;
+    backgroundMusic.muted = false;
 
-    if (!backgroundMusic.paused) return;
+    // Use the uploaded file if no source is assigned.
+    if (
+        !backgroundMusic.getAttribute("src") &&
+        !backgroundMusic.querySelector("source")
+    ) {
+        backgroundMusic.src = "./song.mp3";
+    }
 
-    backgroundMusic.play().catch((error) => {
-        console.log("Music playback was prevented:", error);
+    console.log("Attempting to play background music...");
+    console.log("Audio source:", backgroundMusic.currentSrc || backgroundMusic.src);
+
+    // Call play directly from the button interaction.
+    const playPromise = backgroundMusic.play();
+
+    if (playPromise !== undefined) {
+        playPromise
+            .then(() => {
+                console.log("Background music successfully started.");
+            })
+            .catch((error) => {
+                console.error("Background music playback failed:", error);
+
+                if (terminalStatus) {
+                    terminalStatus.textContent =
+                        "MUSIC COULD NOT START. CHECK AUDIO SETTINGS.";
+                }
+            });
+    }
+}
+
+if (backgroundMusic) {
+    backgroundMusic.addEventListener("error", () => {
+        console.error(
+            "Background music file could not be loaded:",
+            backgroundMusic.error
+        );
     });
 }
 
@@ -116,7 +181,11 @@ function playBackgroundMusic() {
 // ==========================================
 
 function dodgeNoButton() {
-    if (isTyping || noButton.classList.contains("vanished")) {
+    if (
+        isTyping ||
+        !noButton ||
+        noButton.classList.contains("vanished")
+    ) {
         return;
     }
 
@@ -124,7 +193,11 @@ function dodgeNoButton() {
 
     if (noAttempts >= attemptBeforeDisappearing) {
         noButton.classList.add("vanished");
-        terminalStatus.textContent = "404 NOT FOUND.";
+
+        if (terminalStatus) {
+            terminalStatus.textContent = "404 NOT FOUND.";
+        }
+
         return;
     }
 
@@ -148,21 +221,25 @@ function dodgeNoButton() {
     noButton.style.top =
         `${padding + Math.random() * (maxY - padding)}px`;
 
-    terminalStatus.textContent =
-        `NOT HERE BRO: ${noAttempts}/${attemptBeforeDisappearing}`;
+    if (terminalStatus) {
+        terminalStatus.textContent =
+            `NOT HERE BRO: ${noAttempts}/${attemptBeforeDisappearing}`;
+    }
 }
 
-noButton.addEventListener("mouseenter", dodgeNoButton);
+if (noButton) {
+    noButton.addEventListener("mouseenter", dodgeNoButton);
 
-noButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    dodgeNoButton();
-});
+    noButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        dodgeNoButton();
+    });
 
-noButton.addEventListener("touchstart", (event) => {
-    event.preventDefault();
-    dodgeNoButton();
-}, { passive: false });
+    noButton.addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        dodgeNoButton();
+    }, { passive: false });
+}
 
 
 // ==========================================
@@ -170,6 +247,11 @@ noButton.addEventListener("touchstart", (event) => {
 // ==========================================
 
 function typeText(element, text, speed = 35, callback = null) {
+    if (!element) {
+        if (callback) callback();
+        return;
+    }
+
     let index = 0;
 
     function type() {
@@ -199,10 +281,13 @@ function typeMessages(messages, index = 0, callback = null) {
     if (index >= messages.length) {
         isTyping = false;
 
-        if (callback) {
-            callback();
-        }
+        if (callback) callback();
 
+        return;
+    }
+
+    if (!response) {
+        isTyping = false;
         return;
     }
 
@@ -232,15 +317,18 @@ function startExperience(choice) {
 
     isTyping = true;
 
+    // Start music immediately from the user's button click.
     playBackgroundMusic();
 
-    yesButton.disabled = true;
-    noButton.disabled = true;
+    if (yesButton) yesButton.disabled = true;
+    if (noButton) noButton.disabled = true;
 
-    terminalStatus.textContent =
-        `User response received: ${choice}`;
+    if (terminalStatus) {
+        terminalStatus.textContent =
+            `User response received: ${choice}`;
+    }
 
-    response.innerHTML = "";
+    if (response) response.innerHTML = "";
 
     const messages = choice === "YES"
         ? [
@@ -274,13 +362,17 @@ function startExperience(choice) {
         ];
 
     typeMessages(messages, 0, () => {
-        nextInteraction.classList.remove("hidden");
+        if (nextInteraction) {
+            nextInteraction.classList.remove("hidden");
+        }
 
-        nextYes.disabled = false;
-        nextNo.disabled = false;
+        if (nextYes) nextYes.disabled = false;
+        if (nextNo) nextNo.disabled = false;
 
-        terminalStatus.textContent =
-            "AWAITING SECOND RESPONSE.";
+        if (terminalStatus) {
+            terminalStatus.textContent =
+                "AWAITING SECOND RESPONSE.";
+        }
     });
 }
 
@@ -294,15 +386,19 @@ function handleNextChoice(choice) {
 
     isTyping = true;
 
-    nextYes.disabled = true;
-    nextNo.disabled = true;
+    if (nextYes) nextYes.disabled = true;
+    if (nextNo) nextNo.disabled = true;
 
-    nextInteraction.classList.add("hidden");
+    if (nextInteraction) {
+        nextInteraction.classList.add("hidden");
+    }
 
-    terminalStatus.textContent =
-        `Second response received: ${choice}`;
+    if (terminalStatus) {
+        terminalStatus.textContent =
+            `Second response received: ${choice}`;
+    }
 
-    response.innerHTML = "";
+    if (response) response.innerHTML = "";
 
     const messages = choice === "YES"
         ? [
@@ -331,14 +427,20 @@ function handleNextChoice(choice) {
         ];
 
     typeMessages(messages, 0, () => {
-        finalReveal.classList.remove("hidden");
+        if (finalReveal) {
+            finalReveal.classList.remove("hidden");
+        }
 
         typeText(finalMessageText, finalMessage, 35, () => {
-            terminalStatus.textContent =
-                "TRANSMISSION COMPLETE. AWAITING PROCEED.";
+            if (terminalStatus) {
+                terminalStatus.textContent =
+                    "TRANSMISSION COMPLETE. AWAITING PROCEED.";
+            }
 
-            proceedButton.classList.remove("hidden");
-            proceedButton.disabled = false;
+            if (proceedButton) {
+                proceedButton.classList.remove("hidden");
+                proceedButton.disabled = false;
+            }
         });
     });
 }
@@ -349,13 +451,19 @@ function handleNextChoice(choice) {
 // ==========================================
 
 function showOpenPrompt() {
-    mainWorkspace.classList.add("hidden");
+    if (mainWorkspace) {
+        mainWorkspace.classList.add("hidden");
+    }
 
-    birthdayStage.classList.remove("hidden");
-    birthdayStage.classList.add("stage-visible");
+    if (birthdayStage) {
+        birthdayStage.classList.remove("hidden");
+        birthdayStage.classList.add("stage-visible");
+    }
 }
 
-proceedButton.addEventListener("click", showOpenPrompt);
+if (proceedButton) {
+    proceedButton.addEventListener("click", showOpenPrompt);
+}
 
 
 // ==========================================
@@ -363,7 +471,7 @@ proceedButton.addEventListener("click", showOpenPrompt);
 // ==========================================
 
 function dodgeCakeNoButton() {
-    if (openNo.classList.contains("vanished")) {
+    if (!openNo || openNo.classList.contains("vanished")) {
         return;
     }
 
@@ -371,7 +479,11 @@ function dodgeCakeNoButton() {
 
     if (openNoAttempts >= attemptBeforeDisappearing) {
         openNo.classList.add("vanished");
-        openNote.textContent = "NO OPTION NOT FOUND.";
+
+        if (openNote) {
+            openNote.textContent = "NO OPTION NOT FOUND.";
+        }
+
         return;
     }
 
@@ -396,17 +508,19 @@ function dodgeCakeNoButton() {
         `${padding + Math.random() * (maxY - padding)}px`;
 }
 
-openNo.addEventListener("mouseenter", dodgeCakeNoButton);
+if (openNo) {
+    openNo.addEventListener("mouseenter", dodgeCakeNoButton);
 
-openNo.addEventListener("click", (event) => {
-    event.preventDefault();
-    dodgeCakeNoButton();
-});
+    openNo.addEventListener("click", (event) => {
+        event.preventDefault();
+        dodgeCakeNoButton();
+    });
 
-openNo.addEventListener("touchstart", (event) => {
-    event.preventDefault();
-    dodgeCakeNoButton();
-}, { passive: false });
+    openNo.addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        dodgeCakeNoButton();
+    }, { passive: false });
+}
 
 
 // ==========================================
@@ -414,110 +528,130 @@ openNo.addEventListener("touchstart", (event) => {
 // ==========================================
 
 function startBirthdayAnimation() {
-    openPrompt.classList.add("hidden");
+    if (openPrompt) openPrompt.classList.add("hidden");
 
-    birthdayAnimation.classList.remove("hidden");
-    birthdayAnimation.classList.remove("play");
+    if (birthdayAnimation) {
+        birthdayAnimation.classList.remove("hidden");
+        birthdayAnimation.classList.remove("play");
+    }
 
-    birthdayBow.classList.remove("pulling", "shot");
-    birthdayBow.style.removeProperty("--pull-distance");
+    if (birthdayBow) {
+        birthdayBow.classList.remove("pulling", "shot");
+        birthdayBow.style.removeProperty("--pull-distance");
+    }
 
     surpriseStarted = false;
     bowIsBeingPulled = false;
     pullDistance = 0;
 
-    terminalStatus.textContent =
-        "PULL ON THE BOW TO BEGIN.";
+    if (terminalStatus) {
+        terminalStatus.textContent =
+            "PULL ON THE BOW TO BEGIN.";
+    }
 }
 
-openYes.addEventListener("click", startBirthdayAnimation);
+if (openYes) {
+    openYes.addEventListener("click", startBirthdayAnimation);
+}
 
 
 // ==========================================
 // BOW POINTER INTERACTION
 // ==========================================
 
-birthdayBow.addEventListener("pointerdown", (event) => {
-    if (surpriseStarted) return;
+if (birthdayBow) {
+    birthdayBow.addEventListener("pointerdown", (event) => {
+        if (surpriseStarted) return;
 
-    event.preventDefault();
+        event.preventDefault();
 
-    bowIsBeingPulled = true;
-    bowStartX = event.clientX;
-    pullDistance = 0;
+        bowIsBeingPulled = true;
+        bowStartX = event.clientX;
+        pullDistance = 0;
 
-    birthdayBow.classList.add("pulling");
+        birthdayBow.classList.add("pulling");
 
-    birthdayBow.setPointerCapture(event.pointerId);
+        birthdayBow.setPointerCapture(event.pointerId);
 
-    terminalStatus.textContent =
-        "PULL BACK TO AIM AT THE HEART.";
-});
-
-birthdayBow.addEventListener("pointermove", (event) => {
-    if (!bowIsBeingPulled) return;
-
-    const distance = Math.max(
-        0,
-        Math.min(65, bowStartX - event.clientX)
-    );
-
-    pullDistance = distance;
-
-    birthdayBow.style.setProperty(
-        "--pull-distance",
-        `${distance}px`
-    );
-});
-
-birthdayBow.addEventListener("pointerup", () => {
-    if (!bowIsBeingPulled) return;
-
-    bowIsBeingPulled = false;
-
-    birthdayBow.classList.remove("pulling");
-
-    if (pullDistance < 15) {
-        birthdayBow.style.removeProperty("--pull-distance");
-
-        terminalStatus.textContent =
-            "PULL A LITTLE FURTHER.";
-
-        return;
-    }
-
-    if (surpriseStarted) return;
-
-    surpriseStarted = true;
-
-    birthdayBow.classList.add("shot");
-
-    terminalStatus.textContent =
-        "THE HEART HAS BEEN HIT.";
-
-    const arrow = birthdayBow.querySelector(".arrow");
-
-    if (!arrow) return;
-
-    arrow.addEventListener("animationend", function onArrowHit(event) {
-        if (event.animationName !== "shoot-to-heart") return;
-
-        arrow.removeEventListener("animationend", onArrowHit);
-
-        birthdayAnimation.classList.add("play");
-
-        terminalStatus.textContent =
-            "CHOCOLATE CAKE UNLOCKED!";
+        if (terminalStatus) {
+            terminalStatus.textContent =
+                "PULL BACK TO AIM AT THE HEART.";
+        }
     });
-});
 
-birthdayBow.addEventListener("pointercancel", () => {
-    bowIsBeingPulled = false;
+    birthdayBow.addEventListener("pointermove", (event) => {
+        if (!bowIsBeingPulled) return;
 
-    birthdayBow.classList.remove("pulling");
+        const distance = Math.max(
+            0,
+            Math.min(65, bowStartX - event.clientX)
+        );
 
-    birthdayBow.style.removeProperty("--pull-distance");
-});
+        pullDistance = distance;
+
+        birthdayBow.style.setProperty(
+            "--pull-distance",
+            `${distance}px`
+        );
+    });
+
+    birthdayBow.addEventListener("pointerup", () => {
+        if (!bowIsBeingPulled) return;
+
+        bowIsBeingPulled = false;
+
+        birthdayBow.classList.remove("pulling");
+
+        if (pullDistance < 15) {
+            birthdayBow.style.removeProperty("--pull-distance");
+
+            if (terminalStatus) {
+                terminalStatus.textContent =
+                    "PULL A LITTLE FURTHER.";
+            }
+
+            return;
+        }
+
+        if (surpriseStarted) return;
+
+        surpriseStarted = true;
+
+        birthdayBow.classList.add("shot");
+
+        if (terminalStatus) {
+            terminalStatus.textContent =
+                "THE HEART HAS BEEN HIT.";
+        }
+
+        const arrow = birthdayBow.querySelector(".arrow");
+
+        if (!arrow) return;
+
+        arrow.addEventListener("animationend", function onArrowHit(event) {
+            if (event.animationName !== "shoot-to-heart") return;
+
+            arrow.removeEventListener("animationend", onArrowHit);
+
+            if (birthdayAnimation) {
+                birthdayAnimation.classList.add("play");
+            }
+
+            if (terminalStatus) {
+                terminalStatus.textContent =
+                    "CHOCOLATE CAKE UNLOCKED!";
+            }
+        });
+    });
+
+    birthdayBow.addEventListener("pointercancel", () => {
+        bowIsBeingPulled = false;
+
+        birthdayBow.classList.remove("pulling");
+
+        birthdayBow.style.removeProperty("--pull-distance");
+    });
+}
 
 
 // ==========================================
@@ -525,17 +659,24 @@ birthdayBow.addEventListener("pointercancel", () => {
 // ==========================================
 
 function replaySurprise() {
-    birthdayAnimation.classList.remove("play");
-    birthdayAnimation.classList.add("hidden");
+    if (birthdayAnimation) {
+        birthdayAnimation.classList.remove("play");
+        birthdayAnimation.classList.add("hidden");
+    }
 
-    openPrompt.classList.remove("hidden");
+    if (openPrompt) {
+        openPrompt.classList.remove("hidden");
+    }
 
-    openNote.textContent = "one more time?";
+    if (openNote) {
+        openNote.textContent = "one more time?";
+    }
 
-    openNo.classList.remove("vanished", "dodging");
-
-    openNo.style.left = "";
-    openNo.style.top = "";
+    if (openNo) {
+        openNo.classList.remove("vanished", "dodging");
+        openNo.style.left = "";
+        openNo.style.top = "";
+    }
 
     openNoAttempts = 0;
 
@@ -543,66 +684,43 @@ function replaySurprise() {
     bowIsBeingPulled = false;
     pullDistance = 0;
 
-    birthdayBow.classList.remove("shot", "pulling");
+    if (birthdayBow) {
+        birthdayBow.classList.remove("shot", "pulling");
+        birthdayBow.style.removeProperty("--pull-distance");
+    }
 
-    birthdayBow.style.removeProperty("--pull-distance");
-
-    terminalStatus.textContent =
-        "BIRTHDAY SURPRISE READY.";
+    if (terminalStatus) {
+        terminalStatus.textContent =
+            "BIRTHDAY SURPRISE READY.";
+    }
 }
 
-replayBirthday.addEventListener("click", replaySurprise);
+if (replayBirthday) {
+    replayBirthday.addEventListener("click", replaySurprise);
+}
 
 
 // ==========================================
 // BUTTON EVENT LISTENERS
 // ==========================================
 
-yesButton.addEventListener("click", () => {
-    startExperience("YES");
-});
+if (yesButton) {
+    yesButton.addEventListener("click", () => {
+        startExperience("YES");
+    });
+}
 
-nextYes.addEventListener("click", () => {
-    handleNextChoice("YES");
-});
+if (nextYes) {
+    nextYes.addEventListener("click", () => {
+        handleNextChoice("YES");
+    });
+}
 
-nextNo.addEventListener("click", () => {
-    handleNextChoice("NO");
-});
-
-
-// ==========================================
-// GIFT SECTION + SIX-SONG MIXTAPE
-// ==========================================
-
-const continueGiftsButton = document.getElementById("continue-gifts");
-const giftSection = document.getElementById("gift-section");
-const giftBoxButton = document.getElementById("gift-box-button");
-const giftBoxCount = document.getElementById("gift-box-count");
-const giftInstruction = document.getElementById("gift-instruction");
-const giftReveal = document.getElementById("gift-reveal");
-
-const mixtapeOpenButton = document.getElementById("mixtape-open");
-const mixtapePlayer = document.getElementById("mixtape-player");
-const closeMixtapeButton = document.getElementById("close-mixtape");
-const mixtapeAudio = document.getElementById("mixtapeAudio");
-
-const songTitle = document.getElementById("song-title");
-const songArtist = document.getElementById("song-artist");
-const songNote = document.getElementById("song-note");
-const audioStatus = document.getElementById("audio-status");
-
-const playSongButton = document.getElementById("play-song");
-const previousSongButton = document.getElementById("previous-song");
-const nextSongButton = document.getElementById("next-song");
-
-const songItems = document.querySelectorAll(".song-item");
-
-const giftClicksNeeded = 5;
-
-let giftClicks = 0;
-let currentSongIndex = 0;
-let backgroundWasPlaying = false;
+if (nextNo) {
+    nextNo.addEventListener("click", () => {
+        handleNextChoice("NO");
+    });
+}
 
 
 // ==========================================
@@ -664,8 +782,10 @@ function showGiftSection() {
         block: "start"
     });
 
-    terminalStatus.textContent =
-        "A FEW MORE SURPRISES UNLOCKED.";
+    if (terminalStatus) {
+        terminalStatus.textContent =
+            "A FEW MORE SURPRISES UNLOCKED.";
+    }
 }
 
 if (continueGiftsButton) {
@@ -713,8 +833,10 @@ if (giftBoxButton && giftBoxCount && giftReveal) {
                     "a little something for you ♡";
             }
 
-            terminalStatus.textContent =
-                "GIFTS UNLOCKED. OPEN YOUR MIXTAPE.";
+            if (terminalStatus) {
+                terminalStatus.textContent =
+                    "GIFTS UNLOCKED. OPEN YOUR MIXTAPE.";
+            }
 
             giftReveal.scrollIntoView({
                 behavior: "smooth",
@@ -737,17 +859,9 @@ function selectSong(index, shouldPlay = false) {
 
     const song = mixtapeSongs[currentSongIndex];
 
-    if (songTitle) {
-        songTitle.textContent = song.title;
-    }
-
-    if (songArtist) {
-        songArtist.textContent = song.artist;
-    }
-
-    if (songNote) {
-        songNote.textContent = song.note;
-    }
+    if (songTitle) songTitle.textContent = song.title;
+    if (songArtist) songArtist.textContent = song.artist;
+    if (songNote) songNote.textContent = song.note;
 
     songItems.forEach((item, itemIndex) => {
         item.classList.toggle(
@@ -783,6 +897,7 @@ function selectSong(index, shouldPlay = false) {
 async function playCurrentSong() {
     if (!mixtapeAudio) return;
 
+    // Pause background music while a mixtape song is playing.
     if (backgroundMusic && !backgroundMusic.paused) {
         backgroundWasPlaying = true;
         backgroundMusic.pause();
@@ -807,7 +922,7 @@ async function playCurrentSong() {
 
         if (audioStatus) {
             audioStatus.textContent =
-                `couldn't play ${mixtapeSongs[currentSongIndex].file}. Check that the MP3 is uploaded to the repository with that exact filename.`;
+                `couldn't play ${mixtapeSongs[currentSongIndex].file}. Check that the MP3 is uploaded beside index.html.`;
         }
 
         console.error("Mixtape playback failed:", error);
@@ -851,8 +966,10 @@ function openMixtape() {
         block: "start"
     });
 
-    terminalStatus.textContent =
-        "MIXTAPE PLAYER OPENED.";
+    if (terminalStatus) {
+        terminalStatus.textContent =
+            "MIXTAPE PLAYER OPENED.";
+    }
 }
 
 
@@ -873,9 +990,10 @@ function closeMixtape() {
         playSongButton.textContent = "PLAY ▶";
     }
 
+    // Resume the original background music if it was playing before.
     if (backgroundWasPlaying && backgroundMusic) {
         backgroundMusic.play().catch((error) => {
-            console.log(
+            console.error(
                 "Background music could not resume:",
                 error
             );
@@ -887,8 +1005,10 @@ function closeMixtape() {
             "choose a song below to begin.";
     }
 
-    terminalStatus.textContent =
-        "BACK TO YOUR GIFTS.";
+    if (terminalStatus) {
+        terminalStatus.textContent =
+            "BACK TO YOUR GIFTS.";
+    }
 }
 
 
@@ -976,6 +1096,11 @@ if (mixtapeAudio) {
             audioStatus.textContent =
                 `audio file not found: ${mixtapeSongs[currentSongIndex].file}. Make sure it is uploaded beside index.html.`;
         }
+
+        console.error(
+            "Mixtape audio error:",
+            mixtapeAudio.error
+        );
     });
 }
 
@@ -987,3 +1112,5 @@ if (mixtapeAudio) {
 if (mixtapeAudio && songTitle && songArtist && songNote) {
     selectSong(0, false);
 }
+
+console.log("MAHALNISAMSIKAZ script loaded successfully.");
