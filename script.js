@@ -92,7 +92,7 @@ i'm still learning, but i wanted to make something that you could experience you
 
 thx for op'ning diz
 
-yes i do like you because you're gorgeous,
+"yes i do like you because you're gorgeous,
 
 but talking to you makes me happy because someone actually tries to understand my kabaliwan
 
